@@ -17,7 +17,7 @@
 }:
 let
   pname = "documenso";
-  version = "1.12.6";
+  version = "1.13.1";
 in
 buildNpmPackage {
 
@@ -27,10 +27,10 @@ buildNpmPackage {
     owner = "documenso";
     repo = "documenso";
     rev = "v${version}";
-    hash = "sha256-1TKjsOKJkv3COFgsE4tPAymI0MdeT+T8HiNgnoWHlAY=";
+    hash = "sha256-z4x4m3xgR5KHh5GL6UiDSH9kGeF3xncjxZwH0w9pKSk=";
   };
 
-  npmDepsHash = "sha256-ZddRSBDasa3mMAS2dqXgXRMOc1nvspdXsuTZ7c+einw=";
+  npmDepsHash = "sha256-ZPzFZf1MVFzOq13fTFW/LTQg+wswi6cecIIVdfYz108=";
 
   env.PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
 
@@ -71,6 +71,9 @@ buildNpmPackage {
 
     runHook postBuild
   '';
+
+
+    #npmFlags = [ "--legacy-peer-deps" ];
 
   installPhase = ''
           runHook preInstall
