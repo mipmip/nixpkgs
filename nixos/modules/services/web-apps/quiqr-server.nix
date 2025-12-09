@@ -122,8 +122,7 @@ in
         recommendedGzipSettings = mkDefault true;
         recommendedOptimisation = mkDefault true;
         recommendedProxySettings = mkDefault true;
-        recommendedTlsSettings = mkDefault false;
-        #recommendedTlsSettings = mkDefault true;
+        recommendedTlsSettings = mkDefault true;
         virtualHosts.${cfg.nginx.domain} = {
           extraConfig = ''
             more_set_headers Referrer-Policy same-origin;
