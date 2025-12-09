@@ -8,16 +8,16 @@
 
 buildGoModule rec {
   pname = "files-cli";
-  version = "2.15.139";
+  version = "2.15.159";
 
   src = fetchFromGitHub {
     repo = "files-cli";
     owner = "files-com";
     rev = "v${version}";
-    hash = "sha256-4G0obQC2USQY9dGdLoOhfp6OvUYXRk/CsGeZHLpoMjg=";
+    hash = "sha256-dQFeHDMvK0NC+JCDxYc//0NYeixy+VILPqeCNd1vOjc=";
   };
 
-  vendorHash = "sha256-doL9LiFwPQ1RO6ZJzIQ4IBol2/J+Tc7e8dGDEVdpMQo=";
+  vendorHash = "sha256-feVFjCJzSkmtjk5TWW4Kq29xejH3DCSjHOd88aXmwtc=";
 
   ldflags = [
     "-s"

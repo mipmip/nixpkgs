@@ -36,6 +36,7 @@
   webrtc-audio-processing,
   zam-plugins,
   zita-convolver,
+  wrapGAppsNoGuiHook,
 }:
 
 let
@@ -47,6 +48,7 @@ let
     ;
   inherit (kdePackages)
     appstream-qt
+    breeze
     breeze-icons
     extra-cmake-modules
     kcolorscheme
@@ -60,13 +62,13 @@ in
 
 stdenv.mkDerivation rec {
   pname = "easyeffects";
-  version = "8.0.3";
+  version = "8.0.6";
 
   src = fetchFromGitHub {
     owner = "wwmm";
     repo = "easyeffects";
     tag = "v${version}";
-    hash = "sha256-N1VxA68IzNPZcDodoFTdQ0zpS5hCrHyLjP8Y/bqO/JA=";
+    hash = "sha256-5UPwCdpFU1SiD9nlQd99lAK7QdC9jcizj5X3BhBYJ4U=";
   };
 
   patches = [ ./qmlmodule-fix.patch ];
@@ -77,11 +79,15 @@ stdenv.mkDerivation rec {
     intltool
     ninja
     pkg-config
+    wrapGAppsNoGuiHook
     wrapQtAppsHook
   ];
 
+  dontWrapGApps = true;
+
   buildInputs = [
     appstream-qt
+    breeze
     breeze-icons
     deepfilternet
     fftw
@@ -133,6 +139,7 @@ stdenv.mkDerivation rec {
     in
     ''
       qtWrapperArgs+=(
+        "''${gappsWrapperArgs[@]}"
         --set LV2_PATH "${lib.makeSearchPath "lib/lv2" lv2Plugins}"
         --set LADSPA_PATH "${lib.makeSearchPath "lib/ladspa" ladspaPlugins}"
       )

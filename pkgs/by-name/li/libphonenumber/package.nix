@@ -15,13 +15,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "libphonenumber";
-  version = "9.0.18";
+  version = "9.0.20";
 
   src = fetchFromGitHub {
     owner = "google";
     repo = "libphonenumber";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-u+2QN72ZvsfpKAsU9R94cq+S7aKSwZtIsg+uUz/sDtU=";
+    hash = "sha256-naIlf09phlgFS4GqNSLLqzQwM3DGp3bBu3cFinrUYFA=";
   };
 
   patches = [
