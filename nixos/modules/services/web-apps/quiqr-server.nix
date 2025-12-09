@@ -66,7 +66,7 @@ in
         domain = mkOption {
           type = types.str;
           example = "quiqr.example.com";
-          #default = "localhost";
+          default = "localhost";
           description = ''
             The domain name under which to set up the virtual host.
           '';
