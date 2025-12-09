@@ -10,12 +10,12 @@
 
 buildPythonPackage rec {
   pname = "publicsuffixlist";
-  version = "1.0.2.20251119";
+  version = "1.0.2.20251205";
   pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-oDVCjz8oIk6PetfQLSl10r1uCW8O995or5bmHdMKy/Q=";
+    hash = "sha256-RYvLtdaQV+XXbIuLYdXKocmYEE71eIuV2KJlVhaW+nY=";
   };
 
   build-system = [ setuptools ];

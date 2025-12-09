@@ -48,7 +48,7 @@ buildPythonPackage rec {
   nativeCheckInputs = [
     pytestCheckHook
   ]
-  ++ lib.flatten (lib.attrValues optional-dependencies);
+  ++ lib.concatAttrValues optional-dependencies;
 
   pythonImportsCheck = [ "wtforms" ];
 
@@ -57,6 +57,5 @@ buildPythonPackage rec {
     homepage = "https://github.com/wtforms/wtforms";
     changelog = "https://github.com/wtforms/wtforms/blob/${version}/CHANGES.rst";
     license = licenses.bsd3;
-    maintainers = with maintainers; [ bhipple ];
   };
 }

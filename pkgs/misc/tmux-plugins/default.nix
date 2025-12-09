@@ -220,12 +220,12 @@ in
 
   dracula = mkTmuxPlugin rec {
     pluginName = "dracula";
-    version = "3.1.0";
+    version = "3.2.0";
     src = fetchFromGitHub {
       owner = "dracula";
       repo = "tmux";
       tag = "v${version}";
-      hash = "sha256-WNgCa8F618JQiHDM1YxHj7oR7w+7U6SU89K90RYIUh8=";
+      hash = "sha256-emR4G1P80OqxDO4DUrAd495SGLI+avpjpOYUYuoSoNU=";
     };
     meta = {
       homepage = "https://draculatheme.com/tmux";
@@ -437,6 +437,43 @@ in
       license = lib.licenses.mit;
       platforms = lib.platforms.unix;
       maintainers = with lib.maintainers; [ FKouhai ];
+    };
+  };
+
+  lazy-restore = mkTmuxPlugin rec {
+    pluginName = "lazy-restore";
+    rtpFilePath = "tmux-lazy-restore.tmux";
+    version = "0.1.1";
+    src = fetchFromGitHub {
+      owner = "bcampolo";
+      repo = "tmux-lazy-restore";
+      tag = "v${version}";
+      hash = "sha256-rI9KhV6CiAHTErOKuTla+xVbpiP8RK9wu6goxCKhKiA=";
+    };
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postInstall = ''
+      for f in LICENSE README.md; do
+        rm -rf $target/$f
+      done
+      wrapProgram $target/scripts/tmux-session-manager.sh \
+        --prefix PATH : ${
+          with pkgs;
+          lib.makeBinPath [
+            coreutils
+            findutils
+            fzf
+            gnused
+            jq
+            tmux
+          ]
+        }
+    '';
+    meta = with lib; {
+      homepage = "https://github.com/bcampolo/tmux-lazy-restore";
+      description = "session manager plugin that allows sessions to be lazily restored in order to save memory and processing power";
+      license = licenses.mit;
+      platforms = platforms.unix;
+      maintainers = with maintainers; [ bbigras ];
     };
   };
 
