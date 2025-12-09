@@ -76,6 +76,8 @@ buildNpmPackage (finalAttrs: {
 
   postBuild = ''
     #npm run _build_info # TODO with nix methods
+    #npm run build
+    npm run build:packages
     npm run build:frontend
     #&& npm run _pack_embgit && # TODO
     npm exec electron-builder -- \
