@@ -66,6 +66,7 @@ in
         domain = mkOption {
           type = types.str;
           example = "quiqr.example.com";
+          #default = "localhost";
           description = ''
             The domain name under which to set up the virtual host.
           '';
@@ -121,7 +122,8 @@ in
         recommendedGzipSettings = mkDefault true;
         recommendedOptimisation = mkDefault true;
         recommendedProxySettings = mkDefault true;
-        recommendedTlsSettings = mkDefault true;
+        recommendedTlsSettings = mkDefault false;
+        #recommendedTlsSettings = mkDefault true;
         virtualHosts.${cfg.nginx.domain} = {
           extraConfig = ''
             more_set_headers Referrer-Policy same-origin;
