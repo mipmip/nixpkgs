@@ -7,6 +7,7 @@
   jq,
   git,
   hugo,
+  nodejs,
   makeDesktopItem,
   buildGoModule,
 }:
@@ -93,8 +94,15 @@ buildNpmPackage (finalAttrs: {
 
     pushd dist/linux-${lib.optionalString stdenv.hostPlatform.isAarch64 "arm64-"}unpacked
     mkdir -p $out/opt/quiqr
+
+    # needed for electron
     cp -r locales resources{,.pak} $out/opt/quiqr
+
     popd
+
+    # needed for server
+    mkdir -p $out/opt/quiqr-server
+    cp -r . $out/opt/quiqr-server
 
     makeWrapper '${lib.getExe electron}' "$out/bin/quiqr-desktop" \
       --add-flags $out/opt/quiqr/resources/app.asar \
@@ -104,10 +112,8 @@ buildNpmPackage (finalAttrs: {
       --set HUGO_PATH ${hugo}/bin/hugo \
       --inherit-argv0
 
-    makeWrapper '${lib.getExe electron}' "$out/bin/quiqr-server" \
-      --add-flags $out/opt/quiqr/resources/app.asar \
-      --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
-      --set-default ELECTRON_IS_DEV 0 \
+    makeWrapper '${lib.getExe nodejs}' "$out/bin/quiqr-server" \
+      --add-flags $out/opt/quiqr-server/packages/adapters/standalone/dist/main.js \
       --set EMBGIT_PATH ${embgit}/bin/embgit \
       --set HUGO_PATH ${hugo}/bin/hugo \
       --inherit-argv0

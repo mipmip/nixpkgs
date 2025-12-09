@@ -1,0 +1,154 @@
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+
+let
+  inherit (lib)
+    mkEnableOption
+    mkDefault
+    mkPackageOption
+    mkOption
+    mkIf
+    types
+    ;
+  cfg = config.services.quiqr-server;
+  settingsFormat = pkgs.formats.json { };
+  configFile = settingsFormat.generate "quiqr-app-config.json" cfg.settings;
+
+in
+
+{
+
+  meta.maintainers = [ lib.maintainers.mipmip ];
+
+  options = {
+    services.quiqr-server = {
+      enable = mkEnableOption "quiqr-server";
+      package = mkPackageOption pkgs "quiqr" { };
+
+      group = mkOption {
+        type = types.str;
+        default = "quiqr";
+        description = ''
+          Group under which quiqr-server should run.
+        '';
+      };
+
+      dataDir = lib.mkOption {
+        type = lib.types.path;
+        default = "/var/lib/quiqr-server";
+        description = ''
+          Quiqr-server data directory.
+        '';
+      };
+
+      user = mkOption {
+        type = types.str;
+        default = "quiqr";
+        description = ''
+          User under which quiqr-server should run.
+        '';
+      };
+
+      nginx = {
+        enable = mkOption {
+          type = types.bool;
+          default = true;
+          example = false;
+          description = ''
+            Whether to set up an nginx virtual host.
+          '';
+        };
+
+        domain = mkOption {
+          type = types.str;
+          example = "quiqr.example.com";
+          description = ''
+            The domain name under which to set up the virtual host.
+          '';
+        };
+      };
+
+    };
+  };
+
+  config = mkIf cfg.enable {
+
+    systemd.services.quiqr-server = {
+      description = "quiqr-server";
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "simple";
+        StateDirectory = "quiqr-server";
+        WorkingDirectory = "${cfg.dataDir}";
+        User = cfg.user;
+        Group = cfg.group;
+        ExecStart = "${cfg.package}/bin/quiqr-server";
+        #ProtectSystem = "full";
+        #SystemCallArchitectures = "native";
+        #MemoryDenyWriteExecute = true;
+        #NoNewPrivileges = true;
+        #PrivateTmp = true;
+        #PrivateDevices = true;
+        #RestrictAddressFamilies = [
+        #  "AF_INET"
+        #  "AF_INET6"
+        #  "AF_UNIX"
+        #  "AF_NETLINK"
+        #];
+        #RestrictNamespaces = true;
+        #RestrictRealtime = true;
+        #DevicePolicy = "closed";
+        #ProtectClock = true;
+        #ProtectHostname = true;
+        #ProtectProc = "invisible";
+        #ProtectControlGroups = true;
+        #ProtectKernelModules = true;
+        #ProtectKernelTunables = true;
+        #LockPersonality = true;
+        Restart = "on-failure";
+      };
+    };
+
+    services = {
+      nginx = mkIf cfg.nginx.enable {
+        enable = true;
+        recommendedGzipSettings = mkDefault true;
+        recommendedOptimisation = mkDefault true;
+        recommendedProxySettings = mkDefault true;
+        recommendedTlsSettings = mkDefault true;
+        virtualHosts.${cfg.nginx.domain} = {
+          extraConfig = ''
+            more_set_headers Referrer-Policy same-origin;
+            more_set_headers X-Content-Type-Options nosniff;
+          '';
+          locations = {
+            "/" = {
+              alias = "${cfg.package}/opt/quiqr-server/frontend/build/";
+              extraConfig = ''
+                access_log off;
+                more_set_headers Cache-Control "public";
+                expires 365d;
+              '';
+            };
+          };
+        };
+      };
+    };
+
+    users = {
+      groups.${cfg.group} = { };
+      users.${cfg.user} = {
+        isSystemUser = true;
+        home = "${cfg.dataDir}";
+        inherit (cfg) group;
+      };
+    };
+
+  };
+}

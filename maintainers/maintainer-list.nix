@@ -17199,6 +17199,12 @@
     githubId = 20436235;
     name = "Billy Zaelani Malik";
   };
+  mipmip = {
+    email = "post@pimsnel.com";
+    github = "mipmip";
+    githubId = 658612;
+    name = "Pim Snel";
+  };
   mir06 = {
     email = "armin.leuprecht@uni-graz.at";
     github = "mir06";
