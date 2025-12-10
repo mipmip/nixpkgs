@@ -138,18 +138,18 @@ in
       nginx = mkIf cfg.nginx.enable {
         enable = true;
 
-        enableACME = lib.attrsets.optionalAttrs cfg.nginx.enableSSL {
-          enable = true;
-        };
-        forceSSL = lib.attrsets.optionalAttrs cfg.nginx.enableSSL {
-          enable = true;
-        };
-
         recommendedGzipSettings = mkDefault true;
         recommendedOptimisation = mkDefault true;
         recommendedProxySettings = mkDefault true;
         recommendedTlsSettings = mkDefault true;
         virtualHosts.${cfg.nginx.domain} = {
+          enableACME = lib.attrsets.optionalAttrs cfg.nginx.enableSSL {
+            enable = true;
+          };
+          forceSSL = lib.attrsets.optionalAttrs cfg.nginx.enableSSL {
+            enable = true;
+          };
+
           basicAuthFile = cfg.nginx.basicAuthFile;
           extraConfig = ''
             more_set_headers Referrer-Policy same-origin;
