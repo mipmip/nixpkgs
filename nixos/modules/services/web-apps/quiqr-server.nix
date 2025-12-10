@@ -67,11 +67,16 @@ in
             Whether to set up an nginx virtual host.
           '';
         };
-
         enableSSL = lib.mkOption {
           type = lib.types.bool;
           description = "Enable SSL with Lets Encrypt";
           default = false;
+        };
+        acme_email = mkOption {
+          type = types.str;
+          description = ''
+            if `enableSSL=true` enter an admin mail address for Lets Encrypt.
+          '';
         };
 
         basicAuthFile = mkOption {
@@ -132,6 +137,11 @@ in
         #LockPersonality = true;
         Restart = "on-failure";
       };
+    };
+
+    security.acme = lib.attrsets.optionalAttrs cfg.nginx.enableSSL {
+      acceptTerms = true;
+      defaults.email = cfg.nginx.acme_email;
     };
 
     services = {
