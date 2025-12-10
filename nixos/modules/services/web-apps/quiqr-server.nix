@@ -63,6 +63,13 @@ in
           '';
         };
 
+        basicAuthFile = mkOption {
+          type = types.nullOr types.path;
+          default = null;
+          example = "/path/to/htpasswd";
+          description = "Path to htpassword file.";
+        };
+
         domain = mkOption {
           type = types.str;
           example = "quiqr.example.com";
@@ -124,6 +131,7 @@ in
         recommendedProxySettings = mkDefault true;
         recommendedTlsSettings = mkDefault true;
         virtualHosts.${cfg.nginx.domain} = {
+          basicAuthFile = cfg.nginx.basicAuthFile;
           extraConfig = ''
             more_set_headers Referrer-Policy same-origin;
             more_set_headers X-Content-Type-Options nosniff;
