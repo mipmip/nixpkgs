@@ -27,7 +27,12 @@ in
   options = {
     services.quiqr-server = {
       enable = mkEnableOption "quiqr-server";
-      package = mkPackageOption pkgs "quiqr" { };
+      #package = mkPackageOption pkgs "quiqr.server" { };
+
+      package = mkPackageOption pkgs [
+        "quiqr"
+        "server"
+      ] { };
 
       group = mkOption {
         type = types.str;
