@@ -6,6 +6,25 @@
 }:
 
 let
+
+  version = "0.21.5";
+
+  #src = fetchFromGitHub {
+  #  owner = "quiqr";
+  #  repo = "quiqr-desktop";
+  #  tag = "v${finalAttrs.version}";
+  #  hash = "sha256-M0UxttYzy4rpR17QgGe/hpXx2iBKx9I22XmPTOQ9epQ=";
+  #};
+
+  src = fetchFromGitHub {
+    owner = "mipmip";
+    repo = "quiqr-desktop";
+    rev = "70faf07d3efe6d1919d4dfd7ce0760445bb3b822";
+    hash = "sha256-Dt8GKvWnw1Nje/N1Gh9xiFGmu/mnnwReM1pn4DMjZKU=";
+  };
+
+  npmDepsHash = "sha256-a+XPKouW4ogz+tMQiTla+hQNhz+rsH4w2hZrmlfLi04=";
+
   embgit = buildGoModule rec {
     name = "embgit";
     version = "0.6.4";
@@ -29,24 +48,6 @@ let
       license = licenses.mit;
     };
   };
-
-  version = "0.21.5";
-
-  #src = fetchFromGitHub {
-  #  owner = "quiqr";
-  #  repo = "quiqr-desktop";
-  #  tag = "v${finalAttrs.version}";
-  #  hash = "sha256-M0UxttYzy4rpR17QgGe/hpXx2iBKx9I22XmPTOQ9epQ=";
-  #};
-
-  src = fetchFromGitHub {
-    owner = "mipmip";
-    repo = "quiqr-desktop";
-    rev = "ae88dedef0b7617a9541d49091cff4f04f7d3849";
-    hash = "sha256-/YzXy9yojScoMbnAHkXvcgtU9MZU4C8ifzeOh+slcXw=";
-  };
-
-  npmDepsHash = "sha256-a+XPKouW4ogz+tMQiTla+hQNhz+rsH4w2hZrmlfLi04=";
 
 in
 

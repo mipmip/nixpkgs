@@ -68,6 +68,12 @@ in
           '';
         };
 
+        enableSSL = lib.mkOption {
+          type = lib.types.bool;
+          description = "Enable SSL with Lets Encrypt";
+          default = false;
+        };
+
         basicAuthFile = mkOption {
           type = types.nullOr types.path;
           default = null;
@@ -131,6 +137,14 @@ in
     services = {
       nginx = mkIf cfg.nginx.enable {
         enable = true;
+
+        enableACME = lib.attrsets.optionalAttrs cfg.nginx.enableSSL {
+          enable = true;
+        };
+        forceSSL = lib.attrsets.optionalAttrs cfg.nginx.enableSSL {
+          enable = true;
+        };
+
         recommendedGzipSettings = mkDefault true;
         recommendedOptimisation = mkDefault true;
         recommendedProxySettings = mkDefault true;
