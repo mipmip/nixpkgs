@@ -143,12 +143,6 @@ in
         recommendedProxySettings = mkDefault true;
         recommendedTlsSettings = mkDefault true;
         virtualHosts.${cfg.nginx.domain} = {
-          enableACME = lib.attrsets.optionalAttrs cfg.nginx.enableSSL {
-            enable = true;
-          };
-          forceSSL = lib.attrsets.optionalAttrs cfg.nginx.enableSSL {
-            enable = true;
-          };
 
           basicAuthFile = cfg.nginx.basicAuthFile;
           extraConfig = ''
@@ -165,6 +159,10 @@ in
               '';
             };
           };
+        }
+        // lib.attrsets.optionalAttrs cfg.nginx.enableSSL {
+          enableACME = true;
+          forceSSL = true;
         };
       };
     };
