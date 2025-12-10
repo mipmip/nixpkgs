@@ -44,16 +44,23 @@ let
 in
 buildNpmPackage (finalAttrs: {
   pname = "quiqr";
-  version = "0.21.4";
+  version = "0.21.5";
+
+  #src = fetchFromGitHub {
+  #  owner = "quiqr";
+  #  repo = "quiqr-desktop";
+  #  tag = "v${finalAttrs.version}";
+  #  hash = "sha256-M0UxttYzy4rpR17QgGe/hpXx2iBKx9I22XmPTOQ9epQ=";
+  #};
 
   src = fetchFromGitHub {
-    owner = "quiqr";
+    owner = "mipmip";
     repo = "quiqr-desktop";
-    tag = "v${finalAttrs.version}";
-    hash = "sha256-FgL+DNnZgHR+WJeu5mTfGX4tAy1Uon8PoPuJGGN5WNI=";
+    rev = "ae88dedef0b7617a9541d49091cff4f04f7d3849";
+    hash = "sha256-/YzXy9yojScoMbnAHkXvcgtU9MZU4C8ifzeOh+slcXw=";
   };
 
-  npmDepsHash = "sha256-4/b817FDL05ang78Sb8O93l4/9XTJVNF9NQ1i9ElAbE=";
+  npmDepsHash = "sha256-a+XPKouW4ogz+tMQiTla+hQNhz+rsH4w2hZrmlfLi04=";
 
   nativeBuildInputs = [
     jq
