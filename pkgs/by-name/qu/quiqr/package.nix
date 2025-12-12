@@ -7,23 +7,23 @@
 
 let
 
-  version = "0.21.5";
-
-  #src = fetchFromGitHub {
-  #  owner = "quiqr";
-  #  repo = "quiqr-desktop";
-  #  tag = "v${finalAttrs.version}";
-  #  hash = "sha256-M0UxttYzy4rpR17QgGe/hpXx2iBKx9I22XmPTOQ9epQ=";
-  #};
+  version = "0.21.6";
 
   src = fetchFromGitHub {
-    owner = "mipmip";
+    owner = "quiqr";
     repo = "quiqr-desktop";
-    rev = "70faf07d3efe6d1919d4dfd7ce0760445bb3b822";
-    hash = "sha256-Dt8GKvWnw1Nje/N1Gh9xiFGmu/mnnwReM1pn4DMjZKU=";
+    tag = "v${version}";
+    hash = "sha256-AAreDkzc0sQ+f8GZz/Uy4xDMerpQ01JLyXltlZMhJk0=";
   };
 
-  npmDepsHash = "sha256-a+XPKouW4ogz+tMQiTla+hQNhz+rsH4w2hZrmlfLi04=";
+  #  src = fetchFromGitHub {
+  #    owner = "mipmip";
+  #    repo = "quiqr-desktop";
+  #    rev = "70faf07d3efe6d1919d4dfd7ce0760445bb3b822";
+  #    hash = "sha256-Dt8GKvWnw1Nje/N1Gh9xiFGmu/mnnwReM1pn4DMjZKU=";
+  #  };
+
+  npmDepsHash = "sha256-u8cjR+0QutTWb/mwFQuFtloRdw8ZWTSK8fNrqVVJHqA=";
 
   embgit = buildGoModule rec {
     name = "embgit";
