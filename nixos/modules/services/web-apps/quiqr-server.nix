@@ -58,6 +58,14 @@ in
         '';
       };
 
+      environmentFile = lib.mkOption {
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = ''
+          Environment file to load extra environment variables from. E.g. API keys.
+        '';
+      };
+
       nginx = {
         enable = mkOption {
           type = types.bool;
@@ -118,6 +126,7 @@ in
           pkgs.hugo
           pkgs.git
         ];
+
         #ProtectSystem = "full";
         #SystemCallArchitectures = "native";
         #MemoryDenyWriteExecute = true;
@@ -141,7 +150,8 @@ in
         #ProtectKernelTunables = true;
         #LockPersonality = true;
         Restart = "on-failure";
-      };
+      }
+      // lib.optionalAttrs (cfg.environmentFile != null) { EnvironmentFile = cfg.environmentFile; };
     };
 
     security.acme = lib.attrsets.optionalAttrs cfg.nginx.enableSSL {
