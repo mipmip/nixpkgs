@@ -51,6 +51,7 @@ buildNpmPackage (finalAttrs: {
         lib.makeBinPath [
           go
           hugo
+          git
         ]
       } \
       --set EMBGIT_PATH ${embgit}/bin/embgit \

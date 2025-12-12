@@ -116,6 +116,7 @@ in
         path = [
           pkgs.go
           pkgs.hugo
+          pkgs.git
         ];
         #ProtectSystem = "full";
         #SystemCallArchitectures = "native";
