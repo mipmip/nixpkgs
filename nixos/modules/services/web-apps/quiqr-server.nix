@@ -113,6 +113,10 @@ in
         User = cfg.user;
         Group = cfg.group;
         ExecStart = "${cfg.package}/bin/quiqr-server";
+        path = [
+          pkgs.go
+          pkgs.hugo
+        ];
         #ProtectSystem = "full";
         #SystemCallArchitectures = "native";
         #MemoryDenyWriteExecute = true;

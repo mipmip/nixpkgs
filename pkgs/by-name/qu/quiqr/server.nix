@@ -5,7 +5,7 @@
   git,
   hugo,
   nodejs,
-
+  go,
   src,
   version,
   embgit,
@@ -47,6 +47,12 @@ buildNpmPackage (finalAttrs: {
 
     makeWrapper '${lib.getExe nodejs}' "$out/bin/quiqr-server" \
       --add-flags $out/opt/quiqr-server/packages/adapters/standalone/dist/main.js \
+      --set PATH ${
+        lib.makeBinPath [
+          go
+          hugo
+        ]
+      } \
       --set EMBGIT_PATH ${embgit}/bin/embgit \
       --set HUGO_PATH ${hugo}/bin/hugo \
       --inherit-argv0
