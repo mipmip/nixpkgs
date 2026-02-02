@@ -1,9 +1,10 @@
 {
   lib,
-  mkDerivation,
+  stdenv,
   fetchFromGitHub,
   cmake,
   qttools,
+  wrapQtAppsHook,
   kirigami2,
   qtquickcontrols2,
   qtlocation,
@@ -15,7 +16,7 @@
   pyotherside,
 }:
 
-mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "pure-maps";
   version = "3.4.2";
 
@@ -32,6 +33,7 @@ mkDerivation rec {
     python3
     qttools
     python3.pkgs.wrapPython
+    wrapQtAppsHook
   ];
 
   buildInputs = [
@@ -50,17 +52,17 @@ mkDerivation rec {
   pythonPath = with python3.pkgs; [ gpxpy ];
 
   preInstall = ''
-    buildPythonPath "$pythonPath"
+    buildPythonPath "''${pythonPath[*]}"
     qtWrapperArgs+=(--prefix PYTHONPATH : "$program_PYTHONPATH")
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Display vector and raster maps, places, routes, and provide navigation instructions with a flexible selection of data and service providers";
     mainProgram = "pure-maps";
     homepage = "https://github.com/rinigus/pure-maps";
     changelog = "https://github.com/rinigus/pure-maps/blob/${src.rev}/NEWS.md";
-    license = licenses.gpl3Only;
-    maintainers = [ maintainers.Thra11 ];
-    platforms = platforms.linux;
+    license = lib.licenses.gpl3Only;
+    maintainers = [ lib.maintainers.Thra11 ];
+    platforms = lib.platforms.linux;
   };
 }

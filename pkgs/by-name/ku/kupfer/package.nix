@@ -22,7 +22,7 @@ buildPythonApplication rec {
   pname = "kupfer";
   version = "329";
 
-  format = "other";
+  pyproject = false;
 
   src = fetchurl {
     url = "https://github.com/kupferlauncher/kupfer/releases/download/v${version}/kupfer-v${version}.tar.xz";
@@ -63,11 +63,11 @@ buildPythonApplication rec {
 
   doCheck = false; # no tests
 
-  meta = with lib; {
+  meta = {
     description = "Smart, quick launcher";
     homepage = "https://kupferlauncher.github.io/";
-    license = licenses.gpl3;
-    maintainers = with maintainers; [ cobbal ];
-    platforms = platforms.linux;
+    license = lib.licenses.gpl3;
+    maintainers = with lib.maintainers; [ cobbal ];
+    platforms = lib.platforms.linux;
   };
 }

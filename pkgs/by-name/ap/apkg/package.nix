@@ -11,7 +11,7 @@
 python3Packages.buildPythonApplication rec {
   pname = "apkg";
   version = "1.0.0";
-  format = "pyproject";
+  pyproject = true;
 
   src = fetchFromGitLab {
     domain = "gitlab.nic.cz";
@@ -62,12 +62,12 @@ python3Packages.buildPythonApplication rec {
     runHook postCheck
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Upstream packaging automation tool";
     homepage = "https://pkg.labs.nic.cz/pages/apkg";
-    license = licenses.gpl3Plus;
+    license = lib.licenses.gpl3Plus;
     maintainers = [
-      maintainers.vcunat # close to upstream
+      lib.maintainers.vcunat # close to upstream
     ];
     mainProgram = "apkg";
   };

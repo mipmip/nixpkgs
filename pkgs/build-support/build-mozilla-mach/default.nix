@@ -51,7 +51,7 @@ in
   autoconf,
   cargo,
   dump_syms,
-  makeWrapper,
+  makeBinaryWrapper,
   mimalloc,
   nodejs,
   perl,
@@ -59,7 +59,9 @@ in
   pkgsCross, # wasm32 rlbox
   python3,
   runCommand,
+  rustc,
   rust-cbindgen,
+  rustPlatform,
   unzip,
   which,
   wrapGAppsHook3,
@@ -74,8 +76,6 @@ in
   glib,
   gnum4,
   gtk3,
-  icu73,
-  icu77, # if you fiddle with the icu parameters, please check Thunderbird's overrides
   libGL,
   libGLU,
   libevent,
@@ -91,7 +91,17 @@ in
   nss_latest,
   onnxruntime,
   pango,
-  xorg,
+  libxt,
+  libxtst,
+  libxrender,
+  libxi,
+  libxft,
+  libxext,
+  libxdamage,
+  libxcursor,
+  libx11,
+  xorgproto,
+  pixman,
   zip,
   zlib,
   pkgsBuildBuild,
@@ -128,7 +138,9 @@ in
   jemallocSupport ? !stdenv.hostPlatform.isMusl,
   jemalloc,
   ltoSupport ? (
-    stdenv.hostPlatform.isLinux && stdenv.hostPlatform.is64bit && !stdenv.hostPlatform.isRiscV
+    (stdenv.hostPlatform.isLinux || stdenv.hostPlatform.isDarwin)
+    && stdenv.hostPlatform.is64bit
+    && !stdenv.hostPlatform.isRiscV
   ),
   overrideCC,
   buildPackages,
@@ -161,7 +173,7 @@ in
   geolocationSupport ? !privacySupport,
   webrtcSupport ? !privacySupport,
 
-  # digital rights managemewnt
+  # digital rights management
 
   # This flag controls whether Firefox will show the nagbar, that allows
   # users at runtime the choice to enable Widevine CDM support when a site
@@ -180,6 +192,7 @@ in
   # > that I made in
   # > https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=815006
   # >
+  # > @garbas shared with me the list of patches applied for the Nix package.
   # > As they are just for portability and tiny modifications, they don't
   # > alter the experience of the product. In parallel, Rok also shared the
   # > build options. They seem good (even if I cannot judge the quality of the
@@ -200,25 +213,9 @@ assert elfhackSupport -> isElfhackPlatform stdenv;
 let
   inherit (lib) enableFeature;
 
-  rustPackages =
-    pkgs:
-    (pkgs.rust.override (
-      # aarch64-darwin firefox crashes on loading favicons due to a llvm 21 bug:
-      # https://github.com/NixOS/nixpkgs/issues/453372
-      # https://bugzilla.mozilla.org/show_bug.cgi?id=1995582#c16
-      lib.optionalAttrs (stdenv.hostPlatform.isDarwin && stdenv.hostPlatform.isAarch64) {
-        llvmPackages = pkgs.llvmPackages_20;
-      }
-    )).packages.stable;
-
-  toRustC = pkgs: (rustPackages pkgs).rustc;
-
-  rustc = toRustC pkgs;
-  inherit (rustPackages pkgs) rustPlatform;
-
   # Target the LLVM version that rustc is built with for LTO.
   llvmPackages0 = rustc.llvmPackages;
-  llvmPackagesBuildBuild0 = (toRustC pkgsBuildBuild).llvmPackages;
+  llvmPackagesBuildBuild0 = pkgsBuildBuild.rustc.llvmPackages;
 
   # Force the use of lld and other llvm tools for LTO
   llvmPackages = llvmPackages0.override {
@@ -233,7 +230,7 @@ let
   # LTO requires LLVM bintools including ld.lld and llvm-ar.
   buildStdenv = overrideCC llvmPackages.stdenv (
     llvmPackages.stdenv.cc.override {
-      bintools = if ltoSupport then (toRustC buildPackages).llvmPackages.bintools else stdenv.cc.bintools;
+      bintools = if ltoSupport then buildPackages.rustc.llvmPackages.bintools else stdenv.cc.bintools;
     }
   );
 
@@ -304,7 +301,14 @@ buildStdenv.mkDerivation {
   pname = "${pname}-unwrapped";
   version = packageVersion;
 
-  inherit src unpackPhase meta;
+  inherit src unpackPhase;
+
+  meta =
+    meta
+    // lib.optionalAttrs stdenv.hostPlatform.isDarwin {
+      # MacOS builds may take a long time and sometimes hit the default timeout
+      timeout = lib.max (24 * 60 * 60) (meta.timeout or 0);
+    };
 
   outputs = [
     "out"
@@ -328,7 +332,16 @@ buildStdenv.mkDerivation {
       # https://hg-edge.mozilla.org/mozilla-central/rev/aa8a29bd1fb9
       ./139-wayland-drag-animation.patch
     ]
-    # Revert apple sdk bump to 26.1
+    # Revert apple sdk bump to 26.1 and 26.2
+    ++
+      lib.optionals (lib.versionAtLeast version "148" && lib.versionOlder apple-sdk_26.version "26.2")
+        [
+          (fetchpatch {
+            url = "https://github.com/mozilla-firefox/firefox/commit/73cbb9ff0fdbf8b13f38d078ce01ef6ec0794f9c.patch";
+            hash = "sha256-ghdddJxsaxXzLZpOOfwss+2S/UUcbLqKGzWWqKy9h/k=";
+            revert = true;
+          })
+        ]
     ++
       lib.optionals (lib.versionAtLeast version "146" && lib.versionOlder apple-sdk_26.version "26.1")
         [
@@ -343,10 +356,6 @@ buildStdenv.mkDerivation {
   postPatch = ''
     rm -rf obj-x86_64-pc-linux-gnu
     patchShebangs mach build
-  ''
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1927380
-  + lib.optionalString (lib.versionAtLeast version "134") ''
-    sed -i "s/icu-i18n/icu-uc &/" js/moz.configure
   ''
   + extraPostPatch;
 
@@ -367,7 +376,7 @@ buildStdenv.mkDerivation {
     cargo
     gnum4
     llvmPackagesBuildBuild.bintools
-    makeWrapper
+    makeBinaryWrapper
     nodejs
     perl
     python3
@@ -479,7 +488,7 @@ buildStdenv.mkDerivation {
     "--host=${buildStdenv.buildPlatform.config}"
     "--target=${buildStdenv.hostPlatform.config}"
   ]
-  # LTO is done using clang and lld on Linux.
+  # LTO is done using clang and lld.
   ++ lib.optionals ltoSupport [
     "--enable-lto=cross,full" # Cross-Language LTO
     "--enable-linker=lld"
@@ -491,7 +500,8 @@ buildStdenv.mkDerivation {
     # MacOS builds use bundled versions of libraries: https://bugzilla.mozilla.org/show_bug.cgi?id=1776255
     "--enable-system-pixman"
     "--with-system-ffi"
-    "--with-system-icu"
+    # Mozilla vendors 10+ patches and ICU upstream is very slow to adopt them
+    # "--with-system-icu"
     "--with-system-jpeg"
     "--with-system-libevent"
     "--with-system-libvpx"
@@ -571,17 +581,17 @@ buildStdenv.mkDerivation {
       libwebp
       nspr
       pango
-      xorg.libX11
-      xorg.libXcursor
-      xorg.libXdamage
-      xorg.libXext
-      xorg.libXft
-      xorg.libXi
-      xorg.libXrender
-      xorg.libXt
-      xorg.libXtst
-      xorg.pixman
-      xorg.xorgproto
+      libx11
+      libxcursor
+      libxdamage
+      libxext
+      libxft
+      libxi
+      libxrender
+      libxt
+      libxtst
+      pixman
+      xorgproto
       zlib
       (if (lib.versionAtLeast version "144") then nss_latest else nss_esr)
     ]
@@ -594,7 +604,6 @@ buildStdenv.mkDerivation {
       libdrm
     ]
   ))
-  ++ [ (if (lib.versionAtLeast version "138") then icu77 else icu73) ]
   ++ lib.optional gssSupport libkrb5
   ++ lib.optional jemallocSupport jemalloc
   ++ extraBuildInputs;
@@ -670,9 +679,6 @@ buildStdenv.mkDerivation {
     + lib.optionalString (!stdenv.hostPlatform.isDarwin) ''
       # Remove SDK cruft. FIXME: move to a separate output?
       rm -rf $out/share/idl $out/include $out/lib/${binaryName}-devel-*
-
-      # Needed to find Mozilla runtime
-      gappsWrapperArgs+=(--argv0 "$out/bin/.${binaryName}-wrapped")
 
       resourceDir=$out/lib/${binaryName}
     ''

@@ -1,23 +1,22 @@
 {
   lib,
   buildGoModule,
-  fetchFromGitea,
+  fetchFromCodeberg,
   nix-update-script,
 }:
 
 buildGoModule rec {
   pname = "go-errorlint";
-  version = "1.8.0";
+  version = "1.9.0";
 
-  src = fetchFromGitea {
-    domain = "codeberg.org";
+  src = fetchFromCodeberg {
     owner = "polyfloyd";
     repo = "go-errorlint";
     rev = "v${version}";
-    hash = "sha256-jczsgZAC90f2Kkrwpb9oeoK1HtlFDLOjqlexn9v5ojk=";
+    hash = "sha256-79hbXvLnlry2j1mmeHoEx1PRIRd0iRbzN6BDnUyFV+4=";
   };
 
-  vendorHash = "sha256-smOu92BigepCH02qm2Im3T65nUoR/IYhWTjhnjRPppA=";
+  vendorHash = "sha256-U/19X5iY7IHOHkbTADT4ueCJBPh/ryI4PCfg8ZbMLzU=";
 
   ldflags = [
     "-s"

@@ -11,16 +11,16 @@
 
 buildGoModule (finalAttrs: {
   pname = "hugo";
-  version = "0.152.2";
+  version = "0.155.0";
 
   src = fetchFromGitHub {
     owner = "gohugoio";
     repo = "hugo";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-nSWeCRhbaEgr54VDstBKnouUeWR1JjLXEqtYUcEMdyQ=";
+    hash = "sha256-c+yALoenYCfi40lSsZ15iwNnd1SouaJuMrMrsQoCKxw=";
   };
 
-  vendorHash = "sha256-3cIz3SWV/3vYhCgFEGAa+mOaUCzsJurkI2rPtVANE38=";
+  vendorHash = "sha256-hN2szev0heiaQMB3DXiPPVoG5nbXSahcdielz1xtXSg=";
 
   checkFlags =
     let

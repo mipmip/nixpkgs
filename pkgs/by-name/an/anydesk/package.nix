@@ -17,7 +17,20 @@
   libGLU,
   libGL,
   pango,
-  xorg,
+  libxt,
+  libxtst,
+  libxrender,
+  libxrandr,
+  libxmu,
+  libxi,
+  libxfixes,
+  libxext,
+  libxdamage,
+  libx11,
+  libsm,
+  libice,
+  libxkbfile,
+  libxcb,
   minizip,
   lsb-release,
   freetype,
@@ -34,14 +47,14 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "anydesk";
-  version = "7.1.0";
+  version = "7.1.1";
 
   src = fetchurl {
     urls = [
       "https://download.anydesk.com/linux/anydesk-${finalAttrs.version}-amd64.tar.gz"
       "https://download.anydesk.com/linux/generic-linux/anydesk-${finalAttrs.version}-amd64.tar.gz"
     ];
-    hash = "sha256-CplmZZrlnMjmnpOvzFMiSGMnnSNXnXiUtleXi0X52lo=";
+    hash = "sha256-pGzU4dBeWlACAOvshBzTPN6PcNdQkQXAjGFnK+yrKA4=";
   };
 
   buildInputs = [
@@ -63,23 +76,21 @@ stdenv.mkDerivation (finalAttrs: {
     polkit
     polkit_gnome
     pulseaudio
-  ]
-  ++ (with xorg; [
     libxcb
     libxkbfile
-    libX11
-    libXdamage
-    libXext
-    libXfixes
-    libXi
-    libXmu
-    libXrandr
-    libXtst
-    libXt
-    libICE
-    libSM
-    libXrender
-  ]);
+    libx11
+    libxdamage
+    libxext
+    libxfixes
+    libxi
+    libxmu
+    libxrandr
+    libxtst
+    libxt
+    libice
+    libsm
+    libxrender
+  ];
 
   nativeBuildInputs = [
     copyDesktopItems

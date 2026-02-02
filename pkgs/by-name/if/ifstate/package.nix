@@ -3,7 +3,7 @@
   stdenv,
   yq,
   python3Packages,
-  fetchFromGitea,
+  fetchFromCodeberg,
   iproute2,
   libbpf,
   nixosTests,
@@ -14,8 +14,7 @@
 
 let
   version = "2.2.3";
-  src = fetchFromGitea {
-    domain = "codeberg.org";
+  src = fetchFromCodeberg {
     owner = "liske";
     repo = "ifstate";
     tag = version;
@@ -33,7 +32,9 @@ let
       (
         [
           mkdocs-material
+          mike
           mkdocs-glightbox
+          mkdocs-macros-plugin
           mkdocs-minify-plugin
         ]
         ++ mkdocs-material.optional-dependencies.imaging

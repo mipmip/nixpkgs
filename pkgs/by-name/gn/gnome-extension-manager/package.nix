@@ -23,14 +23,14 @@
   libxml2,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "gnome-extension-manager";
   version = "0.6.3";
 
   src = fetchFromGitHub {
     owner = "mjakeman";
     repo = "extension-manager";
-    rev = "v${version}";
+    rev = "v${finalAttrs.version}";
     hash = "sha256-d9MmDDtxRDw+z5DqtnsKAWf5fw62CPkhrkGILiVjtzM=";
   };
 
@@ -68,6 +68,6 @@ stdenv.mkDerivation rec {
     license = lib.licenses.gpl3Plus;
     platforms = lib.platforms.linux;
     mainProgram = "extension-manager";
-    maintainers = with lib.maintainers; [ foo-dogsquared ];
+    maintainers = [ ];
   };
-}
+})

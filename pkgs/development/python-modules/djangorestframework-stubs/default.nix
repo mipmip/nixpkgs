@@ -8,7 +8,6 @@
   coreapi,
   pytest-mypy-plugins,
   pytestCheckHook,
-  pythonOlder,
   requests,
   types-pyyaml,
   setuptools,
@@ -21,8 +20,6 @@ buildPythonPackage rec {
   pname = "djangorestframework-stubs";
   version = "3.16.2";
   pyproject = true;
-
-  disabled = pythonOlder "3.10";
 
   src = fetchFromGitHub {
     owner = "typeddjango";
@@ -64,11 +61,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "rest_framework-stubs" ];
 
-  meta = with lib; {
+  meta = {
     description = "PEP-484 stubs for Django REST Framework";
     homepage = "https://github.com/typeddjango/djangorestframework-stubs";
     changelog = "https://github.com/typeddjango/djangorestframework-stubs/releases/tag/${src.tag}";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     maintainers = [ ];
   };
 }

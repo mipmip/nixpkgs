@@ -1,7 +1,7 @@
 {
   lib,
   rustPlatform,
-  fetchFromGitea,
+  fetchFromCodeberg,
   pkg-config,
   pcsclite,
   nix-update-script,
@@ -11,17 +11,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "rsop";
-  version = "0.9.1";
+  version = "0.9.3";
 
-  src = fetchFromGitea {
-    domain = "codeberg.org";
+  src = fetchFromCodeberg {
     owner = "heiko";
     repo = "rsop";
     rev = "rsop/v${version}";
-    hash = "sha256-LlTKPiBqc0mED3co/d4elo/QkBOhjppOQrrsn3Kwfv4=";
+    hash = "sha256-eP3jh5TIhMHDWnttnYvBre/tfzxajLNGtInWNiFAPiw=";
   };
 
-  cargoHash = "sha256-UFgGMmDeeIKK3L/1f+UCaZKykC7ORIFpMU31Pi1JtHQ=";
+  cargoHash = "sha256-vmxqpOABd7S/htX8bbThyvfOSBY9f1CjX0gY9NQVHss=";
 
   nativeBuildInputs = [ pkg-config ];
 

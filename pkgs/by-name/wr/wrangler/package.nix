@@ -5,11 +5,13 @@
   makeWrapper,
   nodejs,
   pnpm_9,
+  fetchPnpmDeps,
+  pnpmConfigHook,
   autoPatchelfHook,
   cacert,
   llvmPackages,
   musl,
-  xorg,
+  libx11,
   jq,
   moreutils,
   nix-update-script,
@@ -17,24 +19,25 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "wrangler";
-  version = "4.53.0";
+  version = "4.61.1";
 
   src = fetchFromGitHub {
     owner = "cloudflare";
     repo = "workers-sdk";
     rev = "wrangler@${finalAttrs.version}";
-    hash = "sha256-YVIjmqPPgzf++eSwniR82QMun5/c1O+EerFqamZSyNY=";
+    hash = "sha256-SGySz1FlWcgGMGdlnYnywYyBVTpfoA3PzQHeCa8K+Og=";
   };
 
-  pnpmDeps = pnpm_9.fetchDeps {
+  pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs)
       pname
       version
       src
       postPatch
       ;
+    pnpm = pnpm_9;
     fetcherVersion = 2;
-    hash = "sha256-ChOQXP9eW82f6Sxna3mZ5YJMlalPZGaBvsA1C6a5kds=";
+    hash = "sha256-K7TVb0YFqTRfswnkyDVPbDwQvj6YeMdgnzO1TcNZGZk=";
   };
   # pnpm packageManager version in workers-sdk root package.json may not match nixpkgs
   postPatch = ''
@@ -53,13 +56,14 @@ stdenv.mkDerivation (finalAttrs: {
   ]
   ++ lib.optionals (stdenv.hostPlatform.isLinux) [
     musl # not used, but requires extra work to remove
-    xorg.libX11 # for the clipboardy package
+    libx11 # for the clipboardy package
   ];
 
   nativeBuildInputs = [
     makeWrapper
     nodejs
-    pnpm_9.configHook
+    pnpmConfigHook
+    pnpm_9
     jq
     moreutils
   ]

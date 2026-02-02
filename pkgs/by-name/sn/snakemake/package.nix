@@ -10,14 +10,14 @@
 
 python3Packages.buildPythonApplication rec {
   pname = "snakemake";
-  version = "9.14.1";
+  version = "9.16.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "snakemake";
     repo = "snakemake";
     tag = "v${version}";
-    hash = "sha256-yRnoo6vaq2Gw+/WJ3Jjk4AMnj0OPylgPI2lezCzK/B4=";
+    hash = "sha256-Sj9YnPmj7Fn1+8sIO7IYnuj6vDwxUnn+JDg+DbbgbSI=";
   };
 
   postPatch = ''
@@ -86,8 +86,6 @@ python3Packages.buildPythonApplication rec {
       polars
     ])
     ++ [ writableTmpDirAsHomeHook ];
-
-  versionCheckProgramArg = "--version";
 
   enabledTestPaths = [
     "tests/tests.py"
@@ -172,6 +170,13 @@ python3Packages.buildPythonApplication rec {
     #   pulp.apis.core.PulpSolverError: Pulp: cannot execute cbc cwd:
     # but pulp solver is not default
     "test_access_patterns"
+
+    # Hangs with no sandbox, skips due to no network with sandbox relaxed/on
+    "test_modules_meta_wrapper"
+
+    # Hangs
+    # https://github.com/snakemake/snakemake/issues/3939
+    "test_issue1331"
   ];
 
   pythonImportsCheck = [ "snakemake" ];

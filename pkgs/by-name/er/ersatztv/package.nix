@@ -9,13 +9,13 @@
 
 buildDotnetModule rec {
   pname = "ersatztv";
-  version = "25.9.0";
+  version = "26.1.1";
 
   src = fetchFromGitHub {
     owner = "ErsatzTV";
     repo = "ErsatzTV";
     rev = "v${version}";
-    sha256 = "sha256-+ZMDMKrJN+nX9FeSZ8RTFGRf161Mhpqd7jY9FLZWNqM=";
+    sha256 = "sha256-KWgzJAH3LllR+RjEpXSHa+lId6fcZZiGs94IKDftLZo=";
   };
   postPatch = ''
     # Remove config of development tools that don't end up in
@@ -48,11 +48,11 @@ buildDotnetModule rec {
 
   passthru.updateScript = ./update.sh;
 
-  meta = with lib; {
+  meta = {
     description = "Stream custom live channels using your own media";
     homepage = "https://ersatztv.org/";
-    license = licenses.zlib;
-    maintainers = with maintainers; [ allout58 ];
+    license = lib.licenses.zlib;
+    maintainers = with lib.maintainers; [ allout58 ];
     mainProgram = "ErsatzTV";
     platforms = dotnet-runtime.meta.platforms;
   };

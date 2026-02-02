@@ -9,14 +9,14 @@
   xz,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "silver-searcher";
   version = "2.2.0";
 
   src = fetchFromGitHub {
     owner = "ggreer";
     repo = "the_silver_searcher";
-    rev = version;
+    rev = finalAttrs.version;
     sha256 = "0cyazh7a66pgcabijd27xnk1alhsccywivv6yihw378dqxb22i1p";
   };
 
@@ -40,12 +40,12 @@ stdenv.mkDerivation rec {
     xz
   ];
 
-  meta = with lib; {
+  meta = {
     homepage = "https://github.com/ggreer/the_silver_searcher/";
     description = "Code-searching tool similar to ack, but faster";
-    maintainers = with maintainers; [ madjar ];
+    maintainers = with lib.maintainers; [ madjar ];
     mainProgram = "ag";
-    platforms = platforms.all;
-    license = licenses.asl20;
+    platforms = lib.platforms.all;
+    license = lib.licenses.asl20;
   };
-}
+})

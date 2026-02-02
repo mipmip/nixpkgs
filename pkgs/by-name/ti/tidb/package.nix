@@ -6,16 +6,16 @@
 
 buildGoModule rec {
   pname = "tidb";
-  version = "8.5.4";
+  version = "8.5.5";
 
   src = fetchFromGitHub {
     owner = "pingcap";
     repo = "tidb";
     rev = "v${version}";
-    sha256 = "sha256-8YlN49XPplEAk1RwqB+2fXyTMIAFXt5W0CGOE0hc3PQ=";
+    sha256 = "sha256-wrCdclS9qpc0mq5QZ6u5/APZyOTWvCJNCPCzM385MBM=";
   };
 
-  vendorHash = "sha256-fVY34aZCaxGh6OXV9oEkdEtJpXqyaQjxH0v6Xfpokz4=";
+  vendorHash = "sha256-7g8U0gbG46AC4h1SyOTKKuNc5eVRqJsimzshj4O5FYw=";
 
   ldflags = [
     "-X github.com/pingcap/tidb/pkg/parser/mysql.TiDBReleaseVersion=${version}"
@@ -24,11 +24,11 @@ buildGoModule rec {
 
   subPackages = [ "cmd/tidb-server" ];
 
-  meta = with lib; {
+  meta = {
     description = "Open-source, cloud-native, distributed, MySQL-Compatible database for elastic scale and real-time analytics";
     homepage = "https://pingcap.com";
-    license = licenses.asl20;
-    maintainers = with maintainers; [ Makuru ];
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ Makuru ];
     mainProgram = "tidb-server";
   };
 }

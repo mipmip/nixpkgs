@@ -2,15 +2,12 @@
   lib,
   buildPythonPackage,
   fetchFromGitHub,
-  pythonOlder,
 }:
 
 buildPythonPackage rec {
   pname = "cheetah3";
   version = "3.4.0.post5";
   format = "setuptools";
-
-  disabled = pythonOlder "3.7";
 
   src = fetchFromGitHub {
     owner = "CheetahTemplate3";
@@ -23,11 +20,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "Cheetah" ];
 
-  meta = with lib; {
+  meta = {
     description = "Template engine and code generation tool";
     homepage = "http://www.cheetahtemplate.org/";
     changelog = "https://github.com/CheetahTemplate3/cheetah3/releases/tag/${version}";
-    license = licenses.mit;
-    maintainers = with maintainers; [ pjjw ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ pjjw ];
   };
 }

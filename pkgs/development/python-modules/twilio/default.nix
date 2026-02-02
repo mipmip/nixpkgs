@@ -17,16 +17,16 @@
   setuptools,
 }:
 
-buildPythonPackage rec {
+buildPythonPackage (finalAttrs: {
   pname = "twilio";
-  version = "9.8.8";
+  version = "9.10.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "twilio";
     repo = "twilio-python";
-    tag = version;
-    hash = "sha256-q3NjNe7SiqL2HgRkuoChesD333q3vw+aVkSASc6gDQk=";
+    tag = finalAttrs.version;
+    hash = "sha256-DJxyDnAv3wKcujBFCE808PJ9NZe/PN8+Z9J2o49n0HU=";
   };
 
   build-system = [ setuptools ];
@@ -63,11 +63,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "twilio" ];
 
-  meta = with lib; {
+  meta = {
     description = "Twilio API client and TwiML generator";
     homepage = "https://github.com/twilio/twilio-python/";
-    changelog = "https://github.com/twilio/twilio-python/blob/${src.tag}/CHANGES.md";
-    license = licenses.mit;
-    maintainers = with maintainers; [ fab ];
+    changelog = "https://github.com/twilio/twilio-python/blob/${finalAttrs.src.tag}/CHANGES.md";
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ fab ];
   };
-}
+})

@@ -25,12 +25,12 @@
   libgee,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "gnome-calculator";
   version = "49.2";
 
   src = fetchurl {
-    url = "mirror://gnome/sources/gnome-calculator/${lib.versions.major version}/gnome-calculator-${version}.tar.xz";
+    url = "mirror://gnome/sources/gnome-calculator/${lib.versions.major finalAttrs.version}/gnome-calculator-${finalAttrs.version}.tar.xz";
     hash = "sha256-3fTNLt2hNcQcivaPnAzc2dmpFjy59/jijKLI6B/Ydlc=";
   };
 
@@ -73,12 +73,12 @@ stdenv.mkDerivation rec {
     };
   };
 
-  meta = with lib; {
+  meta = {
     homepage = "https://apps.gnome.org/Calculator/";
     description = "Application that solves mathematical equations and is suitable as a default application in a Desktop environment";
     mainProgram = "gnome-calculator";
-    teams = [ teams.gnome ];
-    license = licenses.gpl3Plus;
-    platforms = platforms.unix;
+    teams = [ lib.teams.gnome ];
+    license = lib.licenses.gpl3Plus;
+    platforms = lib.platforms.unix;
   };
-}
+})

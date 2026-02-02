@@ -3,7 +3,6 @@
   buildPythonPackage,
   fetchFromGitHub,
   pytestCheckHook,
-  pythonOlder,
   setuptools,
 }:
 
@@ -11,8 +10,6 @@ buildPythonPackage rec {
   pname = "json5";
   version = "0.12.1";
   pyproject = true;
-
-  disabled = pythonOlder "3.8";
 
   src = fetchFromGitHub {
     owner = "dpranke";
@@ -27,12 +24,12 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "json5" ];
 
-  meta = with lib; {
+  meta = {
     description = "Python implementation of the JSON5 data format";
     homepage = "https://github.com/dpranke/pyjson5";
     changelog = "https://github.com/dpranke/pyjson5/releases/tag/${src.tag}";
-    license = licenses.asl20;
-    maintainers = with maintainers; [ veehaitch ];
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ veehaitch ];
     mainProgram = "pyjson5";
   };
 }

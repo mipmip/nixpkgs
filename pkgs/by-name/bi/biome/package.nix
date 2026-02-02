@@ -7,19 +7,20 @@
   rust-jemalloc-sys,
   zlib,
   gitMinimal,
+  nix-update-script,
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "biome";
-  version = "2.3.8";
+  version = "2.3.13";
 
   src = fetchFromGitHub {
     owner = "biomejs";
     repo = "biome";
     rev = "@biomejs/biome@${finalAttrs.version}";
-    hash = "sha256-pNWwFrI0EWY8HB8aCZdZ/Y+LJl3MS4vl0HhpYFEGUbY=";
+    hash = "sha256-WvEY3YslLu0FdIG8OcL4pPpfB945coU+W+YGLLecTc0=";
   };
 
-  cargoHash = "sha256-gafj1Gm3YUVpLgZXN5lMRvEFo6GEHbmWbNDm+0OTi8w=";
+  cargoHash = "sha256-iIKs6tzhMZ7f8tKh95Db+FdE21vqiw3ksT72xacpPf8=";
 
   nativeBuildInputs = [ pkg-config ];
 
@@ -33,8 +34,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoBuildFlags = [ "-p=biome_cli" ];
   cargoTestFlags = finalAttrs.cargoBuildFlags ++ [
+    "--"
     # fails due to cargo insta
-    "-- --skip=commands::check::print_json"
+    "--skip=commands::check::print_json"
     "--skip=commands::check::print_json_pretty"
     "--skip=commands::explain::explain_logs"
     "--skip=commands::format::print_json"
@@ -56,6 +58,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # tests assume $BIOME_VERSION is unset
     unset BIOME_VERSION
   '';
+
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Toolchain of the web";

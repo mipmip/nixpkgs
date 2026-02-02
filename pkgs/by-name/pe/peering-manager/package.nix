@@ -10,7 +10,7 @@
 let
   python = python3.override {
     packageOverrides = final: prev: {
-      django = prev.django_5_2;
+      django = prev.django_5;
     };
   };
 in
@@ -25,7 +25,7 @@ python.pkgs.buildPythonApplication rec {
     sha256 = "sha256-ByECaQ6NW1Su+k/j/bcKJqFf7bStdWZxOZn95GJEqBg=";
   };
 
-  format = "other";
+  pyproject = false;
 
   propagatedBuildInputs =
     with python.pkgs;
@@ -86,12 +86,12 @@ python.pkgs.buildPythonApplication rec {
     };
   };
 
-  meta = with lib; {
+  meta = {
     homepage = "https://peering-manager.net/";
-    license = licenses.asl20;
+    license = lib.licenses.asl20;
     description = "BGP sessions management tool";
     mainProgram = "peering-manager";
-    teams = [ teams.wdz ];
-    platforms = platforms.linux;
+    maintainers = with lib.maintainers; [ yureka-wdz ];
+    platforms = lib.platforms.linux;
   };
 }

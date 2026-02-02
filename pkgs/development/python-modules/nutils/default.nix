@@ -12,7 +12,6 @@
   stringly,
   treelog,
   pytestCheckHook,
-  pythonOlder,
   pkgs,
 }:
 
@@ -20,8 +19,6 @@ buildPythonPackage rec {
   pname = "nutils";
   version = "9.1";
   pyproject = true;
-
-  disabled = pythonOlder "3.8";
 
   src = fetchFromGitHub {
     owner = "evalf";
@@ -67,11 +64,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "nutils" ];
 
-  meta = with lib; {
+  meta = {
     description = "Numerical Utilities for Finite Element Analysis";
     changelog = "https://github.com/evalf/nutils/releases/tag/${src.tag}";
     homepage = "https://www.nutils.org/";
-    license = licenses.mit;
-    maintainers = with maintainers; [ Scriptkiddi ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ Scriptkiddi ];
   };
 }

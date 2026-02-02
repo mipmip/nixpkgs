@@ -4,7 +4,6 @@
   buildPythonPackage,
   fetchFromGitHub,
   pytestCheckHook,
-  pythonOlder,
   setuptools,
   setuptools-scm,
   six,
@@ -14,8 +13,6 @@ buildPythonPackage rec {
   pname = "markdownify";
   version = "1.2.2";
   pyproject = true;
-
-  disabled = pythonOlder "3.7";
 
   src = fetchFromGitHub {
     owner = "matthewwithanm";
@@ -38,12 +35,12 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "markdownify" ];
 
-  meta = with lib; {
+  meta = {
     description = "HTML to Markdown converter";
     homepage = "https://github.com/matthewwithanm/python-markdownify";
     changelog = "https://github.com/matthewwithanm/python-markdownify/releases/tag/${src.tag}";
-    license = licenses.mit;
-    maintainers = with maintainers; [ McSinyx ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ McSinyx ];
     mainProgram = "markdownify";
   };
 }

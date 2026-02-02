@@ -13,7 +13,7 @@
 buildPythonPackage rec {
   pname = "snakemake-interface-storage-plugins";
   version = "4.3.2";
-  format = "pyproject";
+  pyproject = true;
 
   src = fetchFromGitHub {
     owner = "snakemake";
@@ -34,10 +34,10 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "snakemake_interface_storage_plugins" ];
 
-  meta = with lib; {
+  meta = {
     description = "This package provides a stable interface for interactions between Snakemake and its storage plugins";
     homepage = "https://github.com/snakemake/snakemake-interface-storage-plugins";
-    license = licenses.mit;
-    maintainers = with maintainers; [ veprbl ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ veprbl ];
   };
 }

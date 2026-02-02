@@ -1,6 +1,6 @@
 {
   lib,
-  mkDerivation,
+  stdenv,
   fetchFromGitHub,
   fetchpatch,
   cmake,
@@ -20,7 +20,7 @@
   python3,
 }:
 
-mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "pothos";
   version = "0.7.1";
 
@@ -106,11 +106,11 @@ mkDerivation rec {
     wrapQtApp $out/bin/spuce_window_plot
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Pothos data-flow framework";
     homepage = "https://github.com/pothosware/PothosCore/wiki";
-    license = licenses.boost;
-    platforms = platforms.linux;
+    license = lib.licenses.boost;
+    platforms = lib.platforms.linux;
     maintainers = [ ];
   };
 }

@@ -3,7 +3,6 @@
   pkgs,
   fetchPypi,
   buildPythonPackage,
-  pythonOlder,
   click,
   joblib,
   regex,
@@ -24,8 +23,6 @@ buildPythonPackage rec {
   pname = "nltk";
   version = "3.9.2";
   format = "setuptools";
-
-  disabled = pythonOlder "3.7";
 
   src = fetchPypi {
     inherit pname version;
@@ -99,11 +96,11 @@ buildPythonPackage rec {
     dataDir = pkgs.callPackage ./data-dir.nix { };
   };
 
-  meta = with lib; {
+  meta = {
     description = "Natural Language Processing ToolKit";
     mainProgram = "nltk";
     homepage = "http://nltk.org/";
-    license = licenses.asl20;
+    license = lib.licenses.asl20;
     maintainers = [ lib.maintainers.bengsparks ];
   };
 }

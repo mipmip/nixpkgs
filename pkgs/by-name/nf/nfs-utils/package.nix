@@ -38,12 +38,12 @@ let
   ];
 in
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "nfs-utils";
   version = "2.8.4";
 
   src = fetchurl {
-    url = "mirror://kernel/linux/utils/nfs-utils/${version}/nfs-utils-${version}.tar.xz";
+    url = "mirror://kernel/linux/utils/nfs-utils/${finalAttrs.version}/nfs-utils-${finalAttrs.version}.tar.xz";
     hash = "sha256-EcTMWYpDTX00C60+Byo3O6HcwsSfhV1EsgIiK3js2/U=";
   };
 
@@ -183,7 +183,7 @@ stdenv.mkDerivation rec {
 
   passthru.updateScript = ./update.sh;
 
-  meta = with lib; {
+  meta = {
     description = "Linux user-space NFS utilities";
 
     longDescription = ''
@@ -193,8 +193,8 @@ stdenv.mkDerivation rec {
     '';
 
     homepage = "https://linux-nfs.org/";
-    license = licenses.gpl2Plus;
-    platforms = platforms.linux;
+    license = lib.licenses.gpl2Plus;
+    platforms = lib.platforms.linux;
     maintainers = [ lib.maintainers.dotlambda ];
   };
-}
+})

@@ -15,8 +15,6 @@ buildPythonPackage rec {
   version = "0.6.4";
   pyproject = true;
 
-  disabled = pythonOlder "3.7";
-
   src = fetchFromGitHub {
     owner = "pyupio";
     repo = "dparse";
@@ -45,11 +43,11 @@ buildPythonPackage rec {
     "test_update_pipfile"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Parser for Python dependency files";
     homepage = "https://github.com/pyupio/dparse";
     changelog = "https://github.com/pyupio/dparse/blob/${version}/HISTORY.rst";
-    license = licenses.mit;
-    maintainers = with maintainers; [ thomasdesr ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ thomasdesr ];
   };
 }

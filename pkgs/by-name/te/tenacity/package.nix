@@ -1,7 +1,7 @@
 {
   stdenv,
   lib,
-  fetchFromGitea,
+  fetchFromCodeberg,
   cmake,
   ninja,
   wxGTK32,
@@ -52,14 +52,19 @@ stdenv.mkDerivation (finalAttrs: {
   pname = "tenacity";
   version = "1.3.4";
 
-  src = fetchFromGitea {
-    domain = "codeberg.org";
+  src = fetchFromCodeberg {
     owner = "tenacityteam";
     repo = "tenacity";
     fetchSubmodules = true;
     rev = "v${finalAttrs.version}";
     hash = "sha256-2gndOwgEJK2zDSbjcZigbhEpGv301/ygrf+EQhKp8PI=";
   };
+
+  # https://codeberg.org/tenacityteam/tenacity/pulls/696
+  # can be removed at next version bump
+  patches = [
+    ./cstdlib.patch
+  ];
 
   postPatch = ''
     # GIT_DESCRIBE is used for the version string and can't be passed in

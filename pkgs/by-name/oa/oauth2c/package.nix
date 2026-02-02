@@ -6,20 +6,20 @@
 
 buildGoModule rec {
   pname = "oauth2c";
-  version = "1.18.0";
+  version = "1.19.0";
 
   src = fetchFromGitHub {
     owner = "cloudentity";
     repo = "oauth2c";
     rev = "v${version}";
-    hash = "sha256-1l7NtRKOCUuVsGC7K/TmSbzwGGybJ3owMDn2b4b/BeU=";
+    hash = "sha256-Bh4gWskmY2nWTckUT1FX7vRDz/gg670A77CQTZhz3mg=";
   };
 
   vendorHash = "sha256-I2pOyjKghvHHGEuVqODhysD++f2hD+BF7WJxWbrLcWA=";
 
   doCheck = false; # tests want to talk to oauth2c.us.authz.cloudentity.io
 
-  meta = with lib; {
+  meta = {
     homepage = "https://github.com/cloudentity/oauth2c";
     description = "User-friendly OAuth2 CLI";
     mainProgram = "oauth2c";
@@ -29,8 +29,8 @@ buildGoModule rec {
       using any grant type or client authentication method. It is compliant with
       almost all basic and advanced OAuth 2.0, OIDC, OIDF FAPI and JWT profiles.
     '';
-    license = licenses.asl20;
-    maintainers = [ maintainers.flokli ];
-    platforms = platforms.darwin ++ platforms.linux;
+    license = lib.licenses.asl20;
+    maintainers = [ lib.maintainers.flokli ];
+    platforms = lib.platforms.darwin ++ lib.platforms.linux;
   };
 }

@@ -8,7 +8,6 @@
   hatchling,
   async-lru,
   httpx,
-  importlib-metadata,
   ipykernel,
   jinja2,
   jupyter-core,
@@ -75,8 +74,7 @@ buildPythonPackage rec {
     tornado
     traitlets
   ]
-  ++ lib.optionals (pythonOlder "3.11") [ tomli ]
-  ++ lib.optionals (pythonOlder "3.10") [ importlib-metadata ];
+  ++ lib.optionals (pythonOlder "3.11") [ tomli ];
 
   makeWrapperArgs = [
     "--set"
@@ -89,10 +87,10 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "jupyterlab" ];
 
-  meta = with lib; {
+  meta = {
     changelog = "https://github.com/jupyterlab/jupyterlab/blob/${src.tag}/CHANGELOG.md";
     description = "Jupyter lab environment notebook server extension";
-    license = licenses.bsd3;
+    license = lib.licenses.bsd3;
     homepage = "https://jupyter.org/";
     teams = [ lib.teams.jupyter ];
     mainProgram = "jupyter-lab";

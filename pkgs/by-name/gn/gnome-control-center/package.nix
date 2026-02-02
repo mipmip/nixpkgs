@@ -76,11 +76,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "gnome-control-center";
-  version = "49.2.2";
+  version = "49.4";
 
   src = fetchurl {
     url = "mirror://gnome/sources/gnome-control-center/${lib.versions.major finalAttrs.version}/gnome-control-center-${finalAttrs.version}.tar.xz";
-    hash = "sha256-wjriINbBI30oWSXeeAHg42M4ucwai7UcLjfnFea1A60=";
+    hash = "sha256-Exl15f3dII86MPdmocZn+Ms/FbaJqGjShaZBojQgSwI=";
   };
 
   patches = [
@@ -210,11 +210,11 @@ stdenv.mkDerivation (finalAttrs: {
     };
   };
 
-  meta = with lib; {
+  meta = {
     description = "Utilities to configure the GNOME desktop";
     mainProgram = "gnome-control-center";
-    license = licenses.gpl2Plus;
-    teams = [ teams.gnome ];
-    platforms = platforms.linux;
+    license = lib.licenses.gpl2Plus;
+    teams = [ lib.teams.gnome ];
+    platforms = lib.platforms.linux;
   };
 })

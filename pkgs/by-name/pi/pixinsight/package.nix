@@ -27,7 +27,15 @@
   brotli,
   libxkbcommon,
   libxcb,
-  xorg,
+  libxtst,
+  libxrandr,
+  libxfixes,
+  libxext,
+  libxdamage,
+  libxcomposite,
+  libx11,
+  xrandr,
+  libxkbfile,
   wayland,
   libudev0-shim,
   bubblewrap,
@@ -39,13 +47,13 @@
 }:
 
 let
-  meta = with lib; {
+  meta = {
     description = "Scientific image processing program for astrophotography";
     homepage = "https://pixinsight.com/";
-    sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-    license = licenses.unfree;
+    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
+    license = lib.licenses.unfree;
     platforms = [ "x86_64-linux" ];
-    maintainers = [ maintainers.sheepforce ];
+    maintainers = [ lib.maintainers.sheepforce ];
     hydraPlatforms = [ ];
     mainProgram = "PixInsight";
   };
@@ -114,7 +122,7 @@ let
 
     targetPkgs =
       pkgs:
-      with pkgs;
+
       [
         # PI itself
         installPkg
@@ -150,18 +158,16 @@ let
         brotli
         libxkbcommon
         libxcb
-      ]
-      ++ (with pkgs.xorg; [
-        libX11
-        libXdamage
+        libx11
+        libxdamage
         xrandr
-        libXtst
-        libXcomposite
-        libXext
-        libXfixes
-        libXrandr
+        libxtst
+        libxcomposite
+        libxext
+        libxfixes
+        libxrandr
         libxkbfile
-      ]);
+      ];
 
     profile = ''
       export QT_QPA_PLATFORM_PLUGIN_PATH=/opt/PixInsight/bin/lib/qt-plugins/platforms

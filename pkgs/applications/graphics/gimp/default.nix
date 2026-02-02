@@ -49,7 +49,8 @@
   perl,
   appstream,
   desktop-file-utils,
-  xorg,
+  libxpm,
+  libxmu,
   glib-networking,
   json-glib,
   libmypaint,
@@ -68,6 +69,7 @@
   alsa-lib,
   desktopToDarwinBundle,
   fetchpatch,
+  qoi,
 }:
 
 let
@@ -187,11 +189,12 @@ stdenv.mkDerivation (finalAttrs: {
     libheif
     python
     libexif
-    xorg.libXpm
-    xorg.libXmu
+    libxpm
+    libxmu
     glib-networking
     libmypaint
     mypaint-brushes1
+    qoi
 
     # New file dialogue crashes with “Icon 'image-missing' not present in theme Symbolic” without an icon theme.
     adwaita-icon-theme
@@ -323,12 +326,12 @@ stdenv.mkDerivation (finalAttrs: {
     gtk = gtk3;
   };
 
-  meta = with lib; {
+  meta = {
     description = "GNU Image Manipulation Program";
     homepage = "https://www.gimp.org/";
-    maintainers = with maintainers; [ jtojnar ];
-    license = licenses.gpl3Plus;
-    platforms = platforms.linux;
+    maintainers = with lib.maintainers; [ jtojnar ];
+    license = lib.licenses.gpl3Plus;
+    platforms = lib.platforms.linux;
     mainProgram = "gimp";
   };
 })

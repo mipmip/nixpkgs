@@ -48,6 +48,7 @@ let
         "Macs"
       ];
       spaceSeparated = [
+        "AcceptEnv"
         "AuthorizedKeysFile"
         "AllowGroups"
         "AllowUsers"
@@ -463,6 +464,15 @@ in
           {
             freeformType = settingsFormat.type;
             options = {
+              AcceptEnv = lib.mkOption {
+                type = lib.types.nullOr (lib.types.listOf lib.types.str);
+                default = null;
+                description = ''
+                  Specifies what environment variables sent by the client will be copied into the session's
+                  environment. The TERM environment variable is always accepted whenever the client requests
+                  a pseudo-terminal as it is required by the protocol.
+                '';
+              };
               AuthorizedPrincipalsFile = lib.mkOption {
                 type = lib.types.nullOr lib.types.str;
                 default = "none"; # upstream default
@@ -816,13 +826,13 @@ in
             "Banner ${if cfg.banner == null then "none" else pkgs.writeText "ssh_banner" cfg.banner}"
             "AddressFamily ${if config.networking.enableIPv6 then "any" else "inet"}"
           ]
-          ++ lib.map (port: ''Port ${toString port}'') cfg.ports
+          ++ lib.map (port: "Port ${toString port}") cfg.ports
           ++ lib.map (
             { port, addr, ... }:
-            ''ListenAddress ${addr}${lib.optionalString (port != null) (":" + toString port)}''
+            "ListenAddress ${addr}${lib.optionalString (port != null) (":" + toString port)}"
           ) cfg.listenAddresses
-          ++ lib.optional cfgc.setXAuthLocation "XAuthLocation ${lib.getExe pkgs.xorg.xauth}"
-          ++ lib.optional cfg.allowSFTP ''Subsystem sftp ${cfg.sftpServerExecutable} ${lib.concatStringsSep " " cfg.sftpFlags}''
+          ++ lib.optional cfgc.setXAuthLocation "XAuthLocation ${lib.getExe pkgs.xauth}"
+          ++ lib.optional cfg.allowSFTP "Subsystem sftp ${cfg.sftpServerExecutable} ${lib.concatStringsSep " " cfg.sftpFlags}"
           ++ [
             "AuthorizedKeysFile ${toString cfg.authorizedKeysFiles}"
           ]
@@ -837,7 +847,7 @@ in
       system.checks = [
         (pkgs.runCommand "check-sshd-config"
           {
-            nativeBuildInputs = [ validationPackage ];
+            nativeBuildInputs = [ validationPackage.out ];
           }
           ''
             ${lib.concatMapStringsSep "\n" (
@@ -891,7 +901,7 @@ in
           in
           {
             assertion = lib.length duplicates == 0;
-            message = ''Duplicate sshd config key; does your capitalization match the option's? Duplicate keys: ${formattedDuplicates}'';
+            message = "Duplicate sshd config key; does your capitalization match the option's? Duplicate keys: ${formattedDuplicates}";
           }
         )
       ]

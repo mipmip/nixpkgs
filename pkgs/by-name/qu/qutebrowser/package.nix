@@ -150,7 +150,7 @@ python3.pkgs.buildPythonApplication {
         "''${qtWrapperArgs[@]}"
         # avoid persistant warning on starup
         --set QT_STYLE_OVERRIDE Fusion
-        ${lib.optionalString pipewireSupport ''--prefix LD_LIBRARY_PATH : ${libPath}''}
+        ${lib.optionalString pipewireSupport "--prefix LD_LIBRARY_PATH : ${libPath}"}
         ${lib.optionalString enableVulkan ''
           --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ vulkan-loader ]}
           --set-default QSG_RHI_BACKEND vulkan
@@ -169,7 +169,6 @@ python3.pkgs.buildPythonApplication {
     platforms = if enableWideVine then [ "x86_64-linux" ] else qt6Packages.qtwebengine.meta.platforms;
     maintainers = with lib.maintainers; [
       rnhmjoj
-      ebzzry
       dotlambda
     ];
   };

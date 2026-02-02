@@ -32,7 +32,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "gnome-online-accounts";
-  version = "3.56.2";
+  version = "3.56.3";
 
   outputs = [
     "out"
@@ -45,7 +45,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   src = fetchurl {
     url = "mirror://gnome/sources/gnome-online-accounts/${lib.versions.majorMinor finalAttrs.version}/gnome-online-accounts-${finalAttrs.version}.tar.xz";
-    hash = "sha256-zojfZUV/DmOg2Nr/EzIuKey1hBl6GH9Io6Ib4vzRyCQ=";
+    hash = "sha256-OFlvF+Amn3fhYjpr95VpVzx733t82GP7R4p4rmZN6jA=";
   };
 
   mesonFlags = [
@@ -102,11 +102,11 @@ stdenv.mkDerivation (finalAttrs: {
     };
   };
 
-  meta = with lib; {
+  meta = {
     homepage = "https://gitlab.gnome.org/GNOME/gnome-online-accounts";
     description = "Single sign-on framework for GNOME";
-    platforms = platforms.unix;
-    license = licenses.lgpl2Plus;
-    teams = [ teams.gnome ];
+    platforms = lib.platforms.unix;
+    license = lib.licenses.lgpl2Plus;
+    teams = [ lib.teams.gnome ];
   };
 })

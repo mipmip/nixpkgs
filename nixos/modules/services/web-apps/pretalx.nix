@@ -30,9 +30,7 @@ let
 in
 
 {
-  meta = with lib; {
-    maintainers = with maintainers; [ hexa ] ++ teams.c3d2.members;
-  };
+  meta.maintainers = pkgs.pretalx.meta.maintainers;
 
   options.services.pretalx = {
     enable = lib.mkEnableOption "pretalx";

@@ -10,14 +10,14 @@
   imagemagick,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "pdfmixtool";
   version = "1.2.1";
 
   src = fetchFromGitLab {
     owner = "scarpetta";
     repo = "pdfmixtool";
-    rev = "v${version}";
+    rev = "v${finalAttrs.version}";
     hash = "sha256-UuRTMLlUIyo2RF+XjI229kkE67ybmllIy98p97PjWCE=";
   };
 
@@ -36,11 +36,11 @@ stdenv.mkDerivation rec {
     podofo
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Application to split, merge, rotate and mix PDF files";
     mainProgram = "pdfmixtool";
     homepage = "https://gitlab.com/scarpetta/pdfmixtool";
-    license = licenses.gpl3Only;
-    maintainers = with maintainers; [ onny ];
+    license = lib.licenses.gpl3Only;
+    maintainers = with lib.maintainers; [ onny ];
   };
-}
+})

@@ -14,13 +14,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "minizip-ng";
-  version = "4.0.9";
+  version = "4.1.0";
 
   src = fetchFromGitHub {
     owner = "zlib-ng";
     repo = "minizip-ng";
     rev = finalAttrs.version;
-    hash = "sha256-iAiw+ihVfcSNl6UdBad7FjT5Zwa+brndg60v7ceCzC8=";
+    hash = "sha256-H6ttsVBs437lWMBsq5baVDb9e5I6Fh+xggFre/hxGKU=";
   };
 
   nativeBuildInputs = [
@@ -41,6 +41,10 @@ stdenv.mkDerivation (finalAttrs: {
     "-DMZ_BUILD_TESTS=${if finalAttrs.finalPackage.doCheck then "ON" else "OFF"}"
     "-DMZ_BUILD_UNIT_TESTS=${if finalAttrs.finalPackage.doCheck then "ON" else "OFF"}"
     "-DMZ_LIB_SUFFIX='-ng'"
+  ]
+  ++ lib.optionals stdenv.hostPlatform.isi686 [
+    # tests fail
+    "-DMZ_PKCRYPT=OFF"
   ]
   ++ lib.optionals stdenv.hostPlatform.isDarwin [
     # missing header file
@@ -65,13 +69,13 @@ stdenv.mkDerivation (finalAttrs: {
   nativeCheckInputs = [ gtest ];
   enableParallelChecking = false;
 
-  meta = with lib; {
+  meta = {
     description = "Fork of the popular zip manipulation library found in the zlib distribution";
     homepage = "https://github.com/zlib-ng/minizip-ng";
-    license = licenses.zlib;
-    maintainers = with maintainers; [
+    license = lib.licenses.zlib;
+    maintainers = with lib.maintainers; [
       ris
     ];
-    platforms = platforms.unix;
+    platforms = lib.platforms.unix;
   };
 })

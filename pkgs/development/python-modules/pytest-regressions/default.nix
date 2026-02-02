@@ -3,7 +3,6 @@
   lib,
   buildPythonPackage,
   fetchFromGitHub,
-  pythonOlder,
   matplotlib,
   numpy,
   pandas,
@@ -19,8 +18,6 @@ buildPythonPackage rec {
   pname = "pytest-regressions";
   version = "2.8.1";
   pyproject = true;
-
-  disabled = pythonOlder "3.9";
 
   src = fetchFromGitHub {
     owner = "ESSS";
@@ -76,7 +73,7 @@ buildPythonPackage rec {
     "pytest_regressions.plugin"
   ];
 
-  meta = with lib; {
+  meta = {
     changelog = "https://github.com/ESSS/pytest-regressions/blob/${src.tag}/CHANGELOG.rst";
     description = "Pytest fixtures to write regression tests";
     longDescription = ''
@@ -86,7 +83,7 @@ buildPythonPackage rec {
       that future runs produce the same data.
     '';
     homepage = "https://github.com/ESSS/pytest-regressions";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     maintainers = [ ];
   };
 }

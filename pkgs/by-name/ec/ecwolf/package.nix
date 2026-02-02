@@ -25,7 +25,7 @@ stdenv.mkDerivation (finalAttrs: {
   src = fetchFromBitbucket {
     owner = "ecwolf";
     repo = "ecwolf";
-    rev = "refs/tags/${finalAttrs.version}";
+    tag = finalAttrs.version;
     hash = "sha256-T5K6B2fWMKMLB/662p/YLEv0Od9n0vUakznyoOnr0kI=";
   };
 
@@ -92,15 +92,14 @@ stdenv.mkDerivation (finalAttrs: {
       (lib.getExe nix-update)
     ];
 
-  meta = with lib; {
+  meta = {
     description = "Enhanched SDL-based port of Wolfenstein 3D for various platforms";
     mainProgram = "ecwolf";
     homepage = "https://maniacsvault.net/ecwolf/";
-    license = licenses.gpl2Plus;
-    maintainers = with maintainers; [
+    license = lib.licenses.gpl2Plus;
+    maintainers = with lib.maintainers; [
       jayman2000
-      sander
     ];
-    platforms = platforms.all;
+    platforms = lib.platforms.all;
   };
 })

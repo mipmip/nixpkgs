@@ -3,29 +3,29 @@
   python3Packages,
   fetchFromGitHub,
   gobject-introspection,
-  wrapGAppsHook3,
-  libnotify,
-  withIndicator ? true,
   libappindicator-gtk3,
   libayatana-appindicator,
+  libnotify,
+  wrapGAppsHook4,
+  withIndicator ? true,
 }:
 
 python3Packages.buildPythonApplication rec {
   pname = "protonvpn-gui";
-  version = "4.12.0";
+  version = "4.14.0";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "ProtonVPN";
     repo = "proton-vpn-gtk-app";
     tag = "v${version}";
-    hash = "sha256-pDTzqTiGAisVEHwez526z9C9GzNkMWl6Cui8E6siIXo=";
+    hash = "sha256-zmtx7lua1VsjRjtGYlkuT+u2rCJt7RQk8JRgVrLWVaM=";
   };
 
   nativeBuildInputs = [
     # Needed for the NM namespace
     gobject-introspection
-    wrapGAppsHook3
+    wrapGAppsHook4
   ];
 
   buildInputs = [
@@ -49,7 +49,6 @@ python3Packages.buildPythonApplication rec {
     proton-keyring-linux
     proton-vpn-api-core
     proton-vpn-local-agent
-    proton-vpn-network-manager
     pycairo
     pygobject3
   ];
@@ -72,10 +71,18 @@ python3Packages.buildPythonApplication rec {
   preCheck = ''
     # Needed for Permission denied: '/homeless-shelter'
     export HOME=$(mktemp -d)
+    export XDG_RUNTIME_DIR=$(mktemp -d)
   '';
 
-  # Gets a segmentation fault after the widgets test
-  doCheck = false;
+  nativeCheckInputs = with python3Packages; [
+    pytestCheckHook
+    pytest-cov-stub
+  ];
+
+  disabledTestPaths = [
+    # Segmentation fault during widgets tests
+    "tests/unit/widgets"
+  ];
 
   meta = {
     description = "Proton VPN GTK app for Linux";
@@ -84,6 +91,7 @@ python3Packages.buildPythonApplication rec {
     platforms = lib.platforms.linux;
     mainProgram = "protonvpn-app";
     maintainers = with lib.maintainers; [
+      anthonyroussel
       sebtm
       rapiteanu
     ];

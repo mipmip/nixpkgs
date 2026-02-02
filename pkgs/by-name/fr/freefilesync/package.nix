@@ -29,7 +29,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "freefilesync";
-  version = "14.6";
+  version = "14.7";
 
   src = fetchurl {
     url = "https://freefilesync.org/download/FreeFileSync_${finalAttrs.version}_Source.zip";
@@ -38,7 +38,7 @@ stdenv.mkDerivation (finalAttrs: {
       rm -f "$out"
       tryDownload "$url" "$out"
     '';
-    hash = "sha256-OST2QIhPhKl9Qh4nHIno5XAJmLPNki0bU5A1ZXcUVTw=";
+    hash = "sha256-WMSaKA3OA63V6Vis83vXa+y0ZRE0YxgXiB8YAyTSTc8=";
   };
 
   sourceRoot = ".";
@@ -141,16 +141,16 @@ stdenv.mkDerivation (finalAttrs: {
     })
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Open Source File Synchronization & Backup Software";
     homepage = "https://freefilesync.org";
     license = [
-      licenses.gpl3Only
-      licenses.openssl
-      licenses.curl
-      licenses.bsd3
+      lib.licenses.gpl3Only
+      lib.licenses.openssl
+      lib.licenses.curl
+      lib.licenses.bsd3
     ];
-    maintainers = with maintainers; [ wegank ];
-    platforms = platforms.linux;
+    maintainers = with lib.maintainers; [ wegank ];
+    platforms = lib.platforms.linux;
   };
 })

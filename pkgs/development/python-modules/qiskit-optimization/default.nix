@@ -1,6 +1,5 @@
 {
   lib,
-  pythonOlder,
   buildPythonPackage,
   fetchFromGitHub,
 
@@ -26,12 +25,10 @@ buildPythonPackage rec {
   version = "0.6.1";
   pyproject = true;
 
-  disabled = pythonOlder "3.6";
-
   src = fetchFromGitHub {
     owner = "qiskit";
     repo = pname;
-    rev = "refs/tags/${version}";
+    tag = version;
     hash = "sha256-kzEuICajlV8mgD0YLhwFJaDQVxYZo9jv3sr/r/P0VG0=";
   };
 
@@ -60,14 +57,14 @@ buildPythonPackage rec {
   pythonImportsCheck = [ "qiskit_optimization" ];
   pytestFlags = [ "--durations=10" ];
 
-  meta = with lib; {
+  meta = {
     # broken because it depends on qiskit-algorithms which is not yet packaged in nixpkgs
     broken = true;
     description = "Software for developing quantum computing programs";
     homepage = "https://qiskit.org";
     downloadPage = "https://github.com/QISKit/qiskit-optimization/releases";
     changelog = "https://qiskit.org/documentation/release_notes.html";
-    license = licenses.asl20;
+    license = lib.licenses.asl20;
     maintainers = [ ];
   };
 }

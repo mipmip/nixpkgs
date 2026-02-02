@@ -255,9 +255,9 @@ in
 
       package = mkPackageOption pkgs "mediawiki" { };
 
-      # https://www.mediawiki.org/wiki/Compatibility
+      # https://www.mediawiki.org/wiki/Compatibility#PHP
       phpPackage = mkPackageOption pkgs "php" {
-        default = "php82";
+        default = "php83";
       };
 
       finalPackage = mkOption {
@@ -473,7 +473,7 @@ in
 
       nginx.hostName = mkOption {
         type = types.str;
-        example = literalExpression ''wiki.example.com'';
+        example = literalExpression "wiki.example.com";
         default = "localhost";
         description = ''
           The hostname to use for the nginx virtual host.

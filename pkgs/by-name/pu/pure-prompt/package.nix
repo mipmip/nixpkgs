@@ -4,14 +4,14 @@
   fetchFromGitHub,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "pure-prompt";
   version = "1.26.0";
 
   src = fetchFromGitHub {
     owner = "sindresorhus";
     repo = "pure";
-    rev = "v${version}";
+    rev = "v${finalAttrs.version}";
     sha256 = "sha256-AZSxP2g6BWoxyiSQH7yzbbbfGcwD8jgnXPPfcYwJUL0=";
   };
 
@@ -23,14 +23,14 @@ stdenv.mkDerivation rec {
     cp async.zsh "$OUTDIR/async"
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Pretty, minimal and fast ZSH prompt";
     homepage = "https://github.com/sindresorhus/pure";
-    license = licenses.mit;
-    platforms = platforms.all;
-    maintainers = with maintainers; [
+    license = lib.licenses.mit;
+    platforms = lib.platforms.all;
+    maintainers = with lib.maintainers; [
       euxane
       pablovsky
     ];
   };
-}
+})

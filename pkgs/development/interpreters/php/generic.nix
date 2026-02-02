@@ -346,6 +346,10 @@ let
 
             substituteInPlace $dev/bin/phpize \
               --replace-fail "$out/lib" "$dev/lib"
+          ''
+          + lib.optionalString (lib.versionAtLeast version "8.5") ''
+            # PHP 8.5+ has lexbor built into core; dom needs its headers.
+            cp -r ext/lexbor/lexbor $dev/include/php/ext/lexbor/
           '';
 
           src = if phpSrc == null then defaultPhpSrc else phpSrc;
@@ -410,13 +414,13 @@ let
             };
           };
 
-          meta = with lib; {
+          meta = {
             description = "HTML-embedded scripting language";
             homepage = "https://www.php.net/";
-            license = licenses.php301;
+            license = lib.licenses.php301;
             mainProgram = "php";
-            teams = [ teams.php ];
-            platforms = platforms.all;
+            teams = [ lib.teams.php ];
+            platforms = lib.platforms.all;
             outputsToInstall = [
               "out"
               "dev"

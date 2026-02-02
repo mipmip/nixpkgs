@@ -5,6 +5,7 @@
   meson,
   ninja,
   nix-update-script,
+  pkgsBuildBuild,
   runCommand,
 }:
 
@@ -29,6 +30,7 @@ stdenv.mkDerivation (finalAttrs: {
       --replace "'test/suite-ev.janet'," ""
   '';
 
+  depsBuildBuild = [ pkgsBuildBuild.stdenv.cc ];
   nativeBuildInputs = [
     meson
     ninja
@@ -63,14 +65,14 @@ stdenv.mkDerivation (finalAttrs: {
     updateScript = nix-update-script { };
   };
 
-  meta = with lib; {
+  meta = {
     description = "Janet programming language";
     mainProgram = "janet";
     homepage = "https://janet-lang.org/";
-    license = licenses.mit;
-    maintainers = with maintainers; [
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [
       peterhoeg
     ];
-    platforms = platforms.all;
+    platforms = lib.platforms.all;
   };
 })

@@ -238,15 +238,16 @@ stdenv.mkDerivation (finalAttrs: {
 
   passthru.updateScript = nix-update-script { };
 
-  meta = with lib; {
+  meta = {
     description = "Vulkan and OpenGL overlay for monitoring FPS, temperatures, CPU/GPU load and more";
     homepage = "https://github.com/flightlessmango/MangoHud";
     changelog = "https://github.com/flightlessmango/MangoHud/releases/tag/v${finalAttrs.version}";
-    platforms = platforms.linux;
-    license = licenses.mit;
-    maintainers = with maintainers; [
+    platforms = lib.platforms.linux;
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [
       kira-bruneau
       zeratax
     ];
+    mainProgram = "mangohud";
   };
 })

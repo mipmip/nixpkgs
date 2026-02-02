@@ -8,14 +8,14 @@
   stdenv,
 }:
 
-buildPythonPackage rec {
+buildPythonPackage (finalAttrs: {
   pname = "awscrt";
-  version = "0.29.2";
+  version = "0.31.1";
   pyproject = true;
 
   src = fetchPypi {
-    inherit pname version;
-    hash = "sha256-x42BsTCNQv2h6yHSf88mV5E3uCEEPlKFUPLPxsCauf8=";
+    inherit (finalAttrs) pname version;
+    hash = "sha256-q7ZHaNJb9WPajiFl1Hekkcuhi8IsTsjbesva6U5Z68Q=";
   };
 
   build-system = [ setuptools ];
@@ -32,11 +32,11 @@ buildPythonPackage rec {
   # https://github.com/awslabs/aws-crt-python/issues/281
   doCheck = false;
 
-  meta = with lib; {
+  meta = {
     homepage = "https://github.com/awslabs/aws-crt-python";
-    changelog = "https://github.com/awslabs/aws-crt-python/releases/tag/v${version}";
+    changelog = "https://github.com/awslabs/aws-crt-python/releases/tag/v${finalAttrs.version}";
     description = "Python bindings for the AWS Common Runtime";
-    license = licenses.asl20;
-    maintainers = with maintainers; [ davegallant ];
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ davegallant ];
   };
-}
+})

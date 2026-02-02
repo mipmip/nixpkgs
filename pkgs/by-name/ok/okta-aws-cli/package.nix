@@ -6,7 +6,7 @@
 
 buildGoModule rec {
   pname = "okta-aws-cli";
-  version = "2.5.0";
+  version = "2.5.2";
 
   subPackages = [ "cmd/okta-aws-cli" ];
 
@@ -14,7 +14,7 @@ buildGoModule rec {
     owner = "okta";
     repo = "okta-aws-cli";
     rev = "v${version}";
-    sha256 = "sha256-IGecHT/JVKsaHG9OtPTOlu+ZCDbnqf1h3s4SI7+8oT8=";
+    sha256 = "sha256-z+bW/cTy63bGEhF7ug2GUXDB+kbTi4WhUEuHPOu5iw4=";
   };
 
   vendorHash = "sha256-MnK0zCwPOTzsPrkULEYwnmIBmVrPiwK2yDr3tqVHHRY=";
@@ -24,11 +24,11 @@ buildGoModule rec {
     "-w"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "CLI for having Okta as the IdP for AWS CLI operations";
     homepage = "https://github.com/okta/okta-aws-cli";
-    license = licenses.asl20;
-    maintainers = with maintainers; [ daniyalsuri6 ];
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ daniyalsuri6 ];
     mainProgram = "okta-aws-cli";
   };
 }

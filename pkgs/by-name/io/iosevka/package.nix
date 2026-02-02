@@ -58,16 +58,16 @@ assert (extraParameters != null) -> set != null;
 
 buildNpmPackage rec {
   pname = "Iosevka${toString set}";
-  version = "33.3.6";
+  version = "34.1.0";
 
   src = fetchFromGitHub {
     owner = "be5invis";
     repo = "iosevka";
     rev = "v${version}";
-    hash = "sha256-/Bex4N+3xnYwteO85UaqrIKL5qGnYgSJYO9ET/WEUjM=";
+    hash = "sha256-vdjf2MkKP9DHl/hrz9xJMWMuT2AsonRdt14xQTSsVmU=";
   };
 
-  npmDepsHash = "sha256-6TTcXFf9z3ebL4l+++0DS26BJVnwzIi7hU2R1H0DF44=";
+  npmDepsHash = "sha256-YMfePtKg4kpZ4iCpkq7PxfyDB4MIRg/tgCNmLD31zKo=";
 
   nativeBuildInputs = [
     remarshal
@@ -137,7 +137,7 @@ buildNpmPackage rec {
   enableParallelBuilding = true;
   requiredSystemFeatures = [ "big-parallel" ];
 
-  meta = with lib; {
+  meta = {
     homepage = "https://typeof.net/Iosevka/";
     downloadPage = "https://github.com/be5invis/Iosevka/releases";
     description = "Versatile typeface for code, from code";
@@ -146,9 +146,9 @@ buildNpmPackage rec {
       quasi‑proportional typeface family, designed for writing code, using in
       terminals, and preparing technical documents.
     '';
-    license = licenses.ofl;
-    platforms = platforms.all;
-    maintainers = with maintainers; [
+    license = lib.licenses.ofl;
+    platforms = lib.platforms.all;
+    maintainers = with lib.maintainers; [
       ttuegel
       lunik1
     ];

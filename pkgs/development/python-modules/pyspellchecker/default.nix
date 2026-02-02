@@ -9,7 +9,7 @@
 buildPythonPackage rec {
   pname = "pyspellchecker";
   version = "0.8.4";
-  format = "pyproject";
+  pyproject = true;
 
   src = fetchFromGitHub {
     owner = "barrust";
@@ -22,10 +22,10 @@ buildPythonPackage rec {
 
   nativeCheckInputs = [ pytestCheckHook ];
 
-  meta = with lib; {
+  meta = {
     description = "Pure python spell checking";
     homepage = "https://github.com/barrust/pyspellchecker";
-    license = licenses.mit;
-    maintainers = with maintainers; [ zendo ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ zendo ];
   };
 }

@@ -9,12 +9,12 @@
   linuxquota,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   version = "4.10";
   pname = "quota";
 
   src = fetchurl {
-    url = "mirror://sourceforge/linuxquota/quota-${version}.tar.gz";
+    url = "mirror://sourceforge/linuxquota/quota-${finalAttrs.version}.tar.gz";
     sha256 = "sha256-oEoMr8opwVvotqxmDgYYi8y4AsGe/i58Ge1/PWZ+z14=";
   };
 
@@ -35,11 +35,11 @@ stdenv.mkDerivation rec {
     execer cannot bin/quota
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Tools to manage kernel-level quotas in Linux";
     homepage = "https://sourceforge.net/projects/linuxquota/";
-    license = licenses.gpl2Plus; # With some files being BSD as an exception
-    platforms = platforms.linux;
-    maintainers = [ maintainers.dezgeg ];
+    license = lib.licenses.gpl2Plus; # With some files being BSD as an exception
+    platforms = lib.platforms.linux;
+    maintainers = [ lib.maintainers.dezgeg ];
   };
-}
+})

@@ -3,7 +3,6 @@
   buildPythonPackage,
   crc,
   fetchPypi,
-  pythonOlder,
   setuptools-scm,
 }:
 
@@ -11,8 +10,6 @@ buildPythonPackage rec {
   pname = "apycula";
   version = "0.28";
   pyproject = true;
-
-  disabled = pythonOlder "3.8";
 
   src = fetchPypi {
     inherit pname version;
@@ -28,11 +25,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "apycula" ];
 
-  meta = with lib; {
+  meta = {
     description = "Open Source tools for Gowin FPGAs";
     homepage = "https://github.com/YosysHQ/apicula";
     changelog = "https://github.com/YosysHQ/apicula/releases/tag/${version}";
-    license = licenses.mit;
-    maintainers = with maintainers; [ newam ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ newam ];
   };
 }

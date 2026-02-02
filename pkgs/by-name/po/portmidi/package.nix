@@ -7,14 +7,14 @@
   alsa-lib,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "portmidi";
   version = "2.0.7";
 
   src = fetchFromGitHub {
     owner = "portmidi";
     repo = "portmidi";
-    rev = "v${version}";
+    rev = "v${finalAttrs.version}";
     sha256 = "sha256-kmyjOsjLG56Qqrf6DqgOTpt4A4aCMvCI3koiUoKzwrE=";
   };
 
@@ -42,11 +42,11 @@ stdenv.mkDerivation rec {
 
   hardeningDisable = [ "format" ];
 
-  meta = with lib; {
+  meta = {
     homepage = "https://github.com/PortMidi/portmidi";
     description = "Platform independent library for MIDI I/O";
-    license = licenses.mit;
-    maintainers = with maintainers; [ emilytrau ];
-    platforms = platforms.unix;
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ emilytrau ];
+    platforms = lib.platforms.unix;
   };
-}
+})

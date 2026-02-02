@@ -18,24 +18,23 @@
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "lux-cli";
 
-  version = "0.22.0";
+  version = "0.25.1";
 
   src = fetchFromGitHub {
     owner = "lumen-oss";
     repo = "lux";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-ThzpRKNosPtXCd2l97rQo7pKqgsVzbhON2E/tGsYhN4=";
+    hash = "sha256-0VPXRO8ApVKToP1/2xJlOxi5UTXSfXkCuHV0hECv4VA=";
   };
 
   buildAndTestSubdir = "lux-cli";
 
-  cargoHash = "sha256-EpOLDIhaQT+ao8di4L1Mh+2JI6uIfekJStccHzvpC8M=";
+  cargoHash = "sha256-GkzTN4DjbzyvLAuiXONyMXm8Bgd9t6tj2cqTi/ir268=";
 
   nativeInstallCheckInputs = [
     versionCheckHook
   ];
   versionCheckProgram = "${placeholder "out"}/bin/${finalAttrs.meta.mainProgram}";
-  versionCheckProgramArg = "--version";
   doInstallCheck = true;
 
   nativeBuildInputs = [
@@ -60,7 +59,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
     LUX_SKIP_IMPURE_TESTS = 1; # Disable impure unit tests
   };
 
-  cargoTestFlags = "--lib"; # Disable impure integration tests
+  cargoTestFlags = [
+    "--lib" # Disable impure integration tests
+  ];
 
   nativeCheckInputs = [
     lua5_4

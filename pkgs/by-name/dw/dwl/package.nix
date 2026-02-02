@@ -1,6 +1,6 @@
 {
   lib,
-  fetchFromGitea,
+  fetchFromCodeberg,
   installShellFiles,
   libX11,
   libinput,
@@ -14,7 +14,7 @@
   wayland,
   wayland-protocols,
   wayland-scanner,
-  wlroots,
+  wlroots_0_18,
   writeText,
   xcbutilwm,
   xwayland,
@@ -41,8 +41,7 @@ stdenv.mkDerivation (finalAttrs: {
   pname = "dwl";
   version = "0.7";
 
-  src = fetchFromGitea {
-    domain = "codeberg.org";
+  src = fetchFromCodeberg {
     owner = "dwl";
     repo = "dwl";
     rev = "v${finalAttrs.version}";
@@ -62,7 +61,7 @@ stdenv.mkDerivation (finalAttrs: {
     pixman
     wayland
     wayland-protocols
-    wlroots
+    wlroots_0_18
   ]
   ++ lib.optionals enableXWayland [
     libX11

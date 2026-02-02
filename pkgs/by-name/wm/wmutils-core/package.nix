@@ -7,14 +7,14 @@
   xcb-util-cursor,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "wmutils-core";
   version = "1.7";
 
   src = fetchFromGitHub {
     owner = "wmutils";
     repo = "core";
-    rev = "v${version}";
+    rev = "v${finalAttrs.version}";
     sha256 = "sha256-OKAvJovGu9rMxEe5g4kdL7Foj41kl3zUYIJa04jf0dI=";
   };
 
@@ -26,10 +26,10 @@ stdenv.mkDerivation rec {
 
   installFlags = [ "PREFIX=$(out)" ];
 
-  meta = with lib; {
+  meta = {
     description = "Set of window manipulation tools";
     homepage = "https://github.com/wmutils/core";
-    license = licenses.isc;
-    platforms = platforms.unix;
+    license = lib.licenses.isc;
+    platforms = lib.platforms.unix;
   };
-}
+})

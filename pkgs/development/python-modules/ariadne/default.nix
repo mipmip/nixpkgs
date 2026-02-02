@@ -18,14 +18,14 @@
 
 buildPythonPackage rec {
   pname = "ariadne";
-  version = "0.27.0";
+  version = "0.27.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "mirumee";
     repo = "ariadne";
     tag = version;
-    hash = "sha256-y09w1y+NV2HX8cXGMqv6LvPqGXxFfoaz4DS+oH25dNg=";
+    hash = "sha256-Ew01tj/UzZw3IBY33tDfLihWKImjKTZfFcfThphk+H8=";
   };
 
   patches = [ ./remove-opentracing.patch ];
@@ -78,11 +78,11 @@ buildPythonPackage rec {
     "tests/tracing/test_opentelemetry.py"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Python library for implementing GraphQL servers using schema-first approach";
     homepage = "https://ariadnegraphql.org";
     changelog = "https://github.com/mirumee/ariadne/blob/${src.tag}/CHANGELOG.md";
-    license = licenses.bsd3;
-    maintainers = with maintainers; [ samuela ];
+    license = lib.licenses.bsd3;
+    maintainers = with lib.maintainers; [ samuela ];
   };
 }

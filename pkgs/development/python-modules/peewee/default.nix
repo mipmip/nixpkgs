@@ -11,7 +11,6 @@
   mysql-connector,
   withPostgres ? false,
   psycopg2,
-  pythonOlder,
   setuptools,
 }:
 
@@ -19,8 +18,6 @@ buildPythonPackage rec {
   pname = "peewee";
   version = "3.18.3";
   pyproject = true;
-
-  disabled = pythonOlder "3.7";
 
   src = fetchFromGitHub {
     owner = "coleifer";
@@ -53,11 +50,11 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "peewee" ];
 
-  meta = with lib; {
+  meta = {
     description = "Python ORM with support for various database implementation";
     homepage = "http://peewee-orm.com";
     changelog = "https://github.com/coleifer/peewee/blob/${src.tag}/CHANGELOG.md";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     maintainers = [ ];
     mainProgram = "pwiz.py";
   };

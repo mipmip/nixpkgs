@@ -34,7 +34,7 @@
   udevCheckHook,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "colord";
   version = "1.4.6";
 
@@ -47,7 +47,7 @@ stdenv.mkDerivation rec {
   ];
 
   src = fetchurl {
-    url = "https://www.freedesktop.org/software/colord/releases/colord-${version}.tar.xz";
+    url = "https://www.freedesktop.org/software/colord/releases/colord-${finalAttrs.version}.tar.xz";
     sha256 = "dAdjGie/5dG2cueuQndwAcEF2GC3tzkig8jGMA3ojm8=";
   };
 
@@ -122,11 +122,13 @@ stdenv.mkDerivation rec {
     glib-compile-schemas $out/share/glib-2.0/schemas
   '';
 
-  PKG_CONFIG_SYSTEMD_SYSTEMDSYSTEMUNITDIR = "${placeholder "out"}/lib/systemd/system";
-  PKG_CONFIG_SYSTEMD_SYSTEMDUSERUNITDIR = "${placeholder "out"}/lib/systemd/user";
-  PKG_CONFIG_SYSTEMD_TMPFILESDIR = "${placeholder "out"}/lib/tmpfiles.d";
-  PKG_CONFIG_BASH_COMPLETION_COMPLETIONSDIR = "${placeholder "out"}/share/bash-completion/completions";
-  PKG_CONFIG_UDEV_UDEVDIR = "${placeholder "out"}/lib/udev";
+  env = {
+    PKG_CONFIG_SYSTEMD_SYSTEMDSYSTEMUNITDIR = "${placeholder "out"}/lib/systemd/system";
+    PKG_CONFIG_SYSTEMD_SYSTEMDUSERUNITDIR = "${placeholder "out"}/lib/systemd/user";
+    PKG_CONFIG_SYSTEMD_TMPFILESDIR = "${placeholder "out"}/lib/tmpfiles.d";
+    PKG_CONFIG_BASH_COMPLETION_COMPLETIONSDIR = "${placeholder "out"}/share/bash-completion/completions";
+    PKG_CONFIG_UDEV_UDEVDIR = "${placeholder "out"}/lib/udev";
+  };
 
   passthru = {
     tests = {
@@ -134,12 +136,12 @@ stdenv.mkDerivation rec {
     };
   };
 
-  meta = with lib; {
+  meta = {
     description = "System service to manage, install and generate color profiles to accurately color manage input and output devices";
     homepage = "https://www.freedesktop.org/software/colord/";
-    license = licenses.lgpl2Plus;
-    maintainers = [ maintainers.marcweber ];
-    teams = [ teams.freedesktop ];
-    platforms = platforms.linux;
+    license = lib.licenses.lgpl2Plus;
+    maintainers = [ lib.maintainers.marcweber ];
+    teams = [ lib.teams.freedesktop ];
+    platforms = lib.platforms.linux;
   };
-}
+})

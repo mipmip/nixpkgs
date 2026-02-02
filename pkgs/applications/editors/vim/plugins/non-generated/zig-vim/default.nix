@@ -1,19 +1,18 @@
 {
   lib,
   vimUtils,
-  fetchFromGitea,
+  fetchFromCodeberg,
   nix-update-script,
 }:
 vimUtils.buildVimPlugin {
   pname = "zig.vim";
-  version = "0-unstable-2025-11-28";
+  version = "0-unstable-2026-01-16";
 
-  src = fetchFromGitea {
-    domain = "codeberg.org";
+  src = fetchFromCodeberg {
     owner = "ziglang";
     repo = "zig.vim";
-    rev = "8ff80c24a2ff8fd9edd4a92c2f5793e921043cd6";
-    hash = "sha256-VhEObsEYN/7o+U48MIywhPoYMHemXnKplX+zOrRHuxM=";
+    rev = "fc01f73ce0636723a03b784b63a7a89f2f9a84ae";
+    hash = "sha256-bWvwb6k9jyoAqtp07UfYkyUsGo2N8Yvv7H6zq1eiwP8=";
   };
 
   passthru.updateScript = nix-update-script {

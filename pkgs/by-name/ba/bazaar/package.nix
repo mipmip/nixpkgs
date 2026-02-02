@@ -22,18 +22,20 @@
   libxmlb,
   libyaml,
   md4c,
+  webkitgtk_6_0,
+  libsecret,
   nix-update-script,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "bazaar";
-  version = "0.6.0";
+  version = "0.7.6";
 
   src = fetchFromGitHub {
     owner = "kolunmi";
     repo = "bazaar";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-78X2Vxytxan0OD7cNgL1y4LUBaqgoKb+k80sCIi9ag4=";
+    hash = "sha256-kLCakA3HNzCYZ3yE5rK05qzhZehoQ74xRLMCQ2DzUDU=";
   };
 
   nativeBuildInputs = [
@@ -58,6 +60,8 @@ stdenv.mkDerivation (finalAttrs: {
     libxmlb
     libyaml
     md4c
+    webkitgtk_6_0
+    libsecret
   ];
 
   preFixup = ''
@@ -78,7 +82,6 @@ stdenv.mkDerivation (finalAttrs: {
     license = lib.licenses.gpl3Plus;
     maintainers = with lib.maintainers; [
       dtomvan
-      normalcea
     ];
     mainProgram = "bazaar";
     platforms = lib.platforms.linux;

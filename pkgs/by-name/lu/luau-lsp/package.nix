@@ -9,13 +9,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "luau-lsp";
-  version = "1.57.1";
+  version = "1.61.0";
 
   src = fetchFromGitHub {
     owner = "JohnnyMorganz";
     repo = "luau-lsp";
     tag = finalAttrs.version;
-    hash = "sha256-onL/Iqk6nZClEHqam7wOAb69lO7h92Ox5iCVeuFn/LE=";
+    hash = "sha256-v3ouLDsJkOc1WsgH39HsPTMxhIYjKfLDY78RWtF6Zrg=";
     fetchSubmodules = true;
   };
 
@@ -44,7 +44,6 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   nativeInstallCheckInputs = [ versionCheckHook ];
-  versionCheckProgramArg = "--version";
   doInstallCheck = true;
 
   passthru.updateScript = nix-update-script { };

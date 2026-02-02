@@ -6,15 +6,12 @@
   setuptools,
   twisted,
   pytestCheckHook,
-  pythonOlder,
 }:
 
 buildPythonPackage rec {
   pname = "prometheus-client";
   version = "0.22.1";
   pyproject = true;
-
-  disabled = pythonOlder "3.8";
 
   src = fetchFromGitHub {
     owner = "prometheus";
@@ -38,11 +35,11 @@ buildPythonPackage rec {
     "test_instance_ip_grouping_key"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Prometheus instrumentation library for Python applications";
     homepage = "https://github.com/prometheus/client_python";
     changelog = "https://github.com/prometheus/client_python/releases/tag/${src.tag}";
-    license = licenses.asl20;
+    license = lib.licenses.asl20;
     maintainers = [ ];
   };
 }

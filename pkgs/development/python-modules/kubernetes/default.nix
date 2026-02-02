@@ -10,7 +10,6 @@
   mock,
   pytestCheckHook,
   python-dateutil,
-  pythonOlder,
   pyyaml,
   requests,
   requests-oauthlib,
@@ -24,8 +23,6 @@ buildPythonPackage rec {
   pname = "kubernetes";
   version = "33.1.0";
   pyproject = true;
-
-  disabled = pythonOlder "3.6";
 
   src = fetchFromGitHub {
     owner = "kubernetes-client";
@@ -68,10 +65,10 @@ buildPythonPackage rec {
     "test_rest_proxycare"
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Kubernetes Python client";
     homepage = "https://github.com/kubernetes-client/python";
     changelog = "https://github.com/kubernetes-client/python/releases/tag/${src.tag}";
-    license = licenses.asl20;
+    license = lib.licenses.asl20;
   };
 }

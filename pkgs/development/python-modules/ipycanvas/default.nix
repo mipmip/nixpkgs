@@ -2,7 +2,6 @@
   lib,
   buildPythonPackage,
   fetchPypi,
-  pythonOlder,
   hatchling,
   ipywidgets,
   numpy,
@@ -13,8 +12,6 @@ buildPythonPackage rec {
   pname = "ipycanvas";
   version = "0.14.2";
   pyproject = true;
-
-  disabled = pythonOlder "3.7";
 
   src = fetchPypi {
     inherit pname version;
@@ -43,11 +40,11 @@ buildPythonPackage rec {
   doCheck = false; # tests are in Typescript and require `npx` and `chromium`
   pythonImportsCheck = [ "ipycanvas" ];
 
-  meta = with lib; {
+  meta = {
     description = "Expose the browser's Canvas API to IPython";
     homepage = "https://ipycanvas.readthedocs.io";
     changelog = "https://github.com/jupyter-widgets-contrib/ipycanvas/releases/tag/${version}";
-    license = licenses.bsd3;
-    maintainers = with maintainers; [ bcdarwin ];
+    license = lib.licenses.bsd3;
+    maintainers = with lib.maintainers; [ bcdarwin ];
   };
 }

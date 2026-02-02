@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  fetchFromGitHub,
+  fetchFromGitea,
   makeWrapper,
   cmake,
   ninja,
@@ -9,7 +9,12 @@
   libz,
   cef-binary,
   luajit,
-  xorg,
+  libxxf86vm,
+  libxi,
+  libxext,
+  libx11,
+  libsm,
+  libxcb,
   libgbm,
   glib,
   jdk17,
@@ -24,27 +29,28 @@
 }:
 let
   cef = cef-binary.override {
-    version = "126.2.18";
-    gitRevision = "3647d39";
-    chromiumVersion = "126.0.6478.183";
+    version = "141.0.7";
+    gitRevision = "a5714cc";
+    chromiumVersion = "141.0.7390.108";
 
     srcHashes = {
-      aarch64-linux = "sha256-Ni5aEbI+WuMnbT8gPWMONN5NkTySw7xJvnM6U44Njao=";
-      x86_64-linux = "sha256-YwND4zsndvmygJxwmrCvaFuxjJO704b6aDVSJqpEOKc=";
+      aarch64-linux = "sha256-2A0hVzUVMBemhjnFE/CrKs4CU96Qkxy8S/SieaEJjwE=";
+      x86_64-linux = "sha256-tZzUxeXxbYP8YfIQLbiSyihPcjZM9cd2Ad8gGCSvdGk=";
     };
   };
 in
 let
   bolt = stdenv.mkDerivation (finalAttrs: {
     pname = "bolt-launcher";
-    version = "0.20.0";
+    version = "0.21.0";
 
-    src = fetchFromGitHub {
+    src = fetchFromGitea {
+      domain = "codeberg.org";
       owner = "AdamCake";
-      repo = "bolt";
+      repo = "Bolt";
       tag = finalAttrs.version;
       fetchSubmodules = true;
-      hash = "sha256-Gh1xaYAysZshEGzljnEYJuK8Mv4cwSWH1W4rEu2F/0s=";
+      hash = "sha256-QQJKUCxeff56ghwP00uF4GI35vSAPWM+JphTEUfWOUo=";
     };
 
     nativeBuildInputs = [
@@ -58,8 +64,8 @@ let
 
     buildInputs = [
       libgbm
-      xorg.libX11
-      xorg.libxcb
+      libx11
+      libxcb
       libarchive
       libz
       cef
@@ -98,6 +104,7 @@ let
         exec = "bolt-launcher";
         icon = "bolt-launcher";
         categories = [ "Game" ];
+        startupWMClass = "BoltLauncher";
       })
     ];
   });
@@ -109,11 +116,11 @@ buildFHSEnv {
     pkgs:
     [ bolt ]
     ++ (with pkgs; [
-      xorg.libSM
-      xorg.libXxf86vm
-      xorg.libX11
-      xorg.libXi
-      xorg.libXext
+      libsm
+      libxxf86vm
+      libx11
+      libxi
+      libxext
       glib
       pango
       cairo
@@ -155,8 +162,9 @@ buildFHSEnv {
     maintainers = with lib.maintainers; [
       nezia
       jaspersurmont
+      iedame
     ];
     platforms = lib.platforms.linux;
-    mainProgram = "${bolt.name}";
+    mainProgram = "bolt-launcher";
   };
 }

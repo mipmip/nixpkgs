@@ -21,15 +21,15 @@
   xapp-symbolic-icons,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
   pname = "lightdm-slick-greeter";
-  version = "2.2.3";
+  version = "2.2.6";
 
   src = fetchFromGitHub {
     owner = "linuxmint";
     repo = "slick-greeter";
-    rev = version;
-    hash = "sha256-htyFH1Q8RFyvkW75NMpjajNJDzv/87k/Dr8+R5beT2w=";
+    rev = finalAttrs.version;
+    hash = "sha256-zYjtd/Lb9ialq+pzOml4FMfPq9maX848Or6lzyZj4qs=";
   };
 
   nativeBuildInputs = [
@@ -83,7 +83,7 @@ stdenv.mkDerivation rec {
   '';
 
   preFixup = ''
-    buildPythonPath "$out $pythonPath"
+    buildPythonPath "$out ''${pythonPath[*]}"
     gappsWrapperArgs+=(
       --prefix PYTHONPATH : "$program_PYTHONPATH"
       --prefix XDG_DATA_DIRS : "${lib.makeSearchPath "share" [ xapp-symbolic-icons ]}"
@@ -97,14 +97,14 @@ stdenv.mkDerivation rec {
     }
   ];
 
-  meta = with lib; {
+  meta = {
     description = "Slick-looking LightDM greeter";
     homepage = "https://github.com/linuxmint/slick-greeter";
-    license = licenses.gpl3Only;
-    maintainers = with maintainers; [
+    license = lib.licenses.gpl3Only;
+    maintainers = with lib.maintainers; [
       water-sucks
       bobby285271
     ];
-    platforms = platforms.linux;
+    platforms = lib.platforms.linux;
   };
-}
+})

@@ -7,7 +7,6 @@
   pkgs,
   pyahocorasick,
   pytestCheckHook,
-  pythonOlder,
   pyyaml,
   requests,
   responses,
@@ -20,8 +19,6 @@ buildPythonPackage rec {
   pname = "bc-detect-secrets";
   version = "1.5.45";
   pyproject = true;
-
-  disabled = pythonOlder "3.8";
 
   src = fetchFromGitHub {
     owner = "bridgecrewio";
@@ -67,10 +64,10 @@ buildPythonPackage rec {
 
   pythonImportsCheck = [ "detect_secrets" ];
 
-  meta = with lib; {
+  meta = {
     description = "Tool to detect secrets in the code";
     homepage = "https://github.com/bridgecrewio/detect-secrets";
-    license = licenses.asl20;
-    maintainers = with maintainers; [ fab ];
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ fab ];
   };
 }

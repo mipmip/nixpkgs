@@ -1,7 +1,6 @@
 {
   lib,
   stdenv,
-  mkDerivation,
   fetchurl,
   freetype,
   glib,
@@ -30,6 +29,7 @@
 
   xkeyboardconfig,
   autoPatchelfHook,
+  wrapQtAppsHook,
 }:
 let
   arch =
@@ -38,7 +38,7 @@ let
     else
       throw "Unsupported system ${stdenv.hostPlatform.system} ";
 in
-mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "googleearth-pro";
   version = "7.3.6.10201";
 
@@ -51,6 +51,7 @@ mkDerivation rec {
     dpkg
     makeWrapper
     autoPatchelfHook
+    wrapQtAppsHook
   ];
   propagatedBuildInputs = [ xkeyboardconfig ];
   buildInputs = [
@@ -128,16 +129,15 @@ mkDerivation rec {
       --set QT_XKB_CONFIG_ROOT "${xkeyboardconfig}/share/X11/xkb"
   '';
 
-  meta = with lib; {
+  meta = {
     description = "World sphere viewer";
     homepage = "https://www.google.com/earth/";
-    sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-    license = licenses.unfree;
-    maintainers = with maintainers; [
-      shamilton
+    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
+    license = lib.licenses.unfree;
+    maintainers = with lib.maintainers; [
       xddxdd
     ];
-    platforms = platforms.linux;
+    platforms = lib.platforms.linux;
     knownVulnerabilities = [
       "Includes vulnerable versions of bundled libraries: openssl, ffmpeg, gdal, and proj."
     ];

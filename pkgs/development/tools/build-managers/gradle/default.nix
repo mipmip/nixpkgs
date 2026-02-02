@@ -319,7 +319,7 @@ let
           null;
 
       meta =
-        with lib;
+
         {
           inherit platforms;
           description = "Enterprise-grade build system";
@@ -334,12 +334,12 @@ let
           homepage = "https://www.gradle.org/";
           changelog = "https://docs.gradle.org/${version}/release-notes.html";
           downloadPage = "https://gradle.org/next-steps/?version=${version}";
-          sourceProvenance = with sourceTypes; [
+          sourceProvenance = with lib.sourceTypes; [
             binaryBytecode
             binaryNativeCode
           ];
-          license = licenses.asl20;
-          maintainers = with maintainers; [
+          license = lib.licenses.asl20;
+          maintainers = with lib.maintainers; [
             britter
             liff
             lorenzleutgeb
@@ -364,13 +364,13 @@ rec {
   # https://docs.gradle.org/current/userguide/compatibility.html
 
   gradle_9 = mkGradle {
-    version = "9.1.0";
-    hash = "sha256-oX3dhaJran9d23H/iwX8UQTAICxuZHgkKXkMkzaGyAY=";
+    version = "9.3.0";
+    hash = "sha256-DVhfadoJH8Wyvs7Yd/6rVaMGTUO4odRq6weZawkV4OA=";
     defaultJava = jdk21;
   };
   gradle_8 = mkGradle {
-    version = "8.14.3";
-    hash = "sha256-vXEQIhNJMGCVbsIp2Ua+7lcVjb2J0OYrkbyg+ixfNTE=";
+    version = "8.14.4";
+    hash = "sha256-8XcSmKcPbbWina9iN4xOGKF/wzybprFDYuDN9AYQOA0=";
     defaultJava = jdk21;
     # Only enable this on *one* version to avoid duplicate PRs.
     enableUpdateScript = true;

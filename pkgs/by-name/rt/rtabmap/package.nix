@@ -14,7 +14,9 @@
   opencv,
   pcl,
   liblapack,
-  xorg,
+  libxt,
+  libsm,
+  libice,
   libusb1,
   yaml-cpp,
   libnabo,
@@ -40,13 +42,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "rtabmap";
-  version = "0.22.1";
+  version = "0.23.2";
 
   src = fetchFromGitHub {
     owner = "introlab";
     repo = "rtabmap";
     tag = finalAttrs.version;
-    hash = "sha256-6kDjIfUgyaqrsVAWO6k0h1qIDN/idMOJJxLpqMQ6DFY=";
+    hash = "sha256-u9wswlFkGpPgJaBwSddnpv49wBAmkKRwWFO5jQ9/twA=";
   };
 
   nativeBuildInputs = [
@@ -61,9 +63,9 @@ stdenv.mkDerivation (finalAttrs: {
     opencv.cxxdev
     pcl'
     liblapack
-    xorg.libSM
-    xorg.libICE
-    xorg.libXt
+    libsm
+    libice
+    libxt
 
     ## Optional
     libusb1
