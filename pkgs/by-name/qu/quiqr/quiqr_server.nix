@@ -1,7 +1,6 @@
 {
   lib,
   buildNpmPackage,
-  jq,
   git,
   hugo,
   nodejs,
@@ -10,20 +9,14 @@
   version,
   embgit,
   npmDepsHash,
-
+  nativeBuildInputs,
+  patches,
+  meta
 }:
 
-let
-  description = "A local first flat-file CMS, headless server application.";
-in
 buildNpmPackage (finalAttrs: {
   pname = "quiqr-server";
-  inherit src version npmDepsHash;
-
-  nativeBuildInputs = [
-    jq
-    git
-  ];
+  inherit src version npmDepsHash patches nativeBuildInputs;
 
   env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
 
@@ -38,8 +31,6 @@ buildNpmPackage (finalAttrs: {
 
   installPhase = ''
     runHook preInstall
-
-    #mkdir $out
 
     # needed for server
     mkdir -p $out/opt/quiqr-server
@@ -61,12 +52,10 @@ buildNpmPackage (finalAttrs: {
     runHook postInstall
   '';
 
-  meta = {
-    changelog = "https://github.com/quiqr/quiqr-desktop/releases/tag/v${finalAttrs.version}";
-    inherit description;
-    homepage = "https://quiqr.org";
-    license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ mipmip ];
+  meta = meta // {
     mainProgram = "quiqr-server";
+    description = "A local first flat-file CMS, headless server application.";
   };
+
+
 })

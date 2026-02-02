@@ -3,16 +3,16 @@
   stdenv,
   buildNpmPackage,
   electron_39,
-  jq,
-  git,
   hugo,
-  nodejs,
   makeDesktopItem,
 
   src,
   version,
   embgit,
   npmDepsHash,
+  meta,
+  patches,
+  nativeBuildInputs
 
 }:
 
@@ -24,23 +24,11 @@ let
 in
 buildNpmPackage (finalAttrs: {
   pname = "quiqr";
-  inherit src version npmDepsHash;
-
-  nativeBuildInputs = [
-    jq
-    git
-  ];
+  inherit src version npmDepsHash nativeBuildInputs patches;
 
   env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
 
   makeCacheWritable = true;
-
-  #preBuild = ''
-  #  if [[ $(jq --raw-output '.devDependencies.electron' < package.json | grep -E --only-matching '^[0-9]+') != ${lib.escapeShellArg (lib.versions.major electron.version)} ]]; then
-  #    echo 'ERROR: electron version mismatch'
-  #    exit 1
-  #  fi
-  #'';
 
   dontNpmBuild = true;
 
@@ -100,13 +88,10 @@ buildNpmPackage (finalAttrs: {
     })
   ];
 
-  meta = {
-    changelog = "https://github.com/quiqr/quiqr-desktop/releases/tag/v${finalAttrs.version}";
-    inherit description;
-    homepage = "https://quiqr.org";
-    license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [ flokli ];
+  meta = meta // {
     mainProgram = "quiqr-desktop";
+    description = description;
     platforms = electron.meta.platforms;
   };
+
 })

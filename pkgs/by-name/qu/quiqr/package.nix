@@ -3,27 +3,31 @@
   callPackage,
   fetchFromGitHub,
   buildGoModule,
+  jq,
+  git,
 }:
 
 let
 
-  version = "0.21.6";
-
-  #src = fetchFromGitHub {
-  #  owner = "quiqr";
-  #  repo = "quiqr-desktop";
-  #  tag = "v${version}";
-  #  hash = "sha256-AAreDkzc0sQ+f8GZz/Uy4xDMerpQ01JLyXltlZMhJk0=";
-  #};
+  version = "0.22.0";
 
   src = fetchFromGitHub {
-    owner = "mipmip";
+    owner = "quiqr";
     repo = "quiqr-desktop";
-    rev = "a1c414c5a04acc7be573f2b1c39695f662d77e34";
-    hash = "sha256-t1eIFfmdwdSV4dA6xCPI9tv+VAa8uAz7fmB5TloG0fc=";
+    tag = "v${version}";
+    hash = "sha256-fjzqmcT4rKKasJeK64JQqZ8kiYjbWAaPPA85+tZYuvQ=";
   };
 
-  npmDepsHash = "sha256-MNQ14v6/0BC27vD0B1sBoJKT9D69Bvnap9YPCK12hyY=";
+  npmDepsHash = "sha256-iUNWhc3GPR7p39YQVLNQyKQfzZB5KcrzX6Iy0u43K9E=";
+
+  patches = [
+    ./package-lock.json.patch
+  ];
+
+  nativeBuildInputs = [
+    jq
+    git
+  ];
 
   embgit = buildGoModule rec {
     name = "embgit";
@@ -49,25 +53,29 @@ let
     };
   };
 
+  meta = {
+    changelog = "https://github.com/quiqr/quiqr-desktop/releases/tag/v${version}";
+    homepage = "https://quiqr.org";
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ mipmip ];
+  };
+
+
+  pkgsArgs = {
+    inherit
+      src
+      version
+      embgit
+      npmDepsHash
+      patches
+      nativeBuildInputs
+      meta
+      ;
+  };
+
 in
 
-## inspired by pingvin-share
 lib.recurseIntoAttrs {
-  desktop = callPackage ./desktop.nix {
-    inherit
-      src
-      version
-      embgit
-      npmDepsHash
-      ;
-  };
-
-  server = callPackage ./server.nix {
-    inherit
-      src
-      version
-      embgit
-      npmDepsHash
-      ;
-  };
+  desktop = callPackage ./quiqr_desktop.nix pkgsArgs;
+  server = callPackage ./quiqr_server.nix pkgsArgs;
 }
