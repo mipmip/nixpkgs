@@ -20,7 +20,6 @@ buildNpmPackage (finalAttrs: {
   inherit src version npmDepsHash patches nativeBuildInputs nodejs postPatch;
 
   env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
-
   makeCacheWritable = true;
   dontNpmBuild = true;
 

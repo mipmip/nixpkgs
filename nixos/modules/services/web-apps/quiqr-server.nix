@@ -176,7 +176,7 @@ in
           '';
           locations = {
             "/" = {
-              alias = "${cfg.package}/opt/quiqr-server/frontend/build/";
+              alias = "${cfg.package}/opt/quiqr-server/packages/frontend/build/";
               extraConfig = ''
                 access_log off;
                 more_set_headers Cache-Control "public";

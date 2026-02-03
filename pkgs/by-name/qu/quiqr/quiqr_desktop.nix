@@ -34,6 +34,8 @@ buildNpmPackage (finalAttrs: {
 
   dontNpmBuild = true;
 
+
+
   postBuild = ''
     #npm run _build_info # TODO with nix methods
 
