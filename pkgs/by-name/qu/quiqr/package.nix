@@ -85,5 +85,5 @@ in
 
 lib.recurseIntoAttrs {
   desktop = callPackage ./quiqr_desktop.nix pkgsArgs;
-    #server = callPackage ./quiqr_server.nix pkgsArgs;
+  server = callPackage ./quiqr_server.nix pkgsArgs;
 }
