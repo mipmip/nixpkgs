@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 CMDS=();DESC=();NARGS=$#;ARG1=$1;make_command(){ CMDS+=($1);DESC+=("$2");};usage(){ printf "\nUsage: %s [command]\n\nCommands:\n" $0;line="              ";for((i=0;i<=$(( ${#CMDS[*]} -1));i++));do printf "  %s %s ${DESC[$i]}\n" ${CMDS[$i]} "${line:${#CMDS[$i]}}";done;echo;};runme(){ if test $NARGS -eq 1;then eval "$ARG1"||usage;else usage;fi;}
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PACKAGE_FILE="$SCRIPT_DIR/package.nix"
+
 VERSION="0.22.0";
 PKGS="quiqr"
 GH_ORG="quiqr"
@@ -30,17 +33,27 @@ update(){
 
   rm -Rf $tempdir
   mkdir $tempdir
-  cp flatten-workspace-deps.py $tempdir
+  cp flatten-workspace-deps-from-package-lockfile.py $tempdir
   tar -xzvf /tmp/${PKGS}-v${VERSION}.tar.gz -C $tempdir --strip-components=1
   cd $tempdir
   git init
   git add package-lock.json package.json
   git commit -m "commit4diff" package-lock.json package.json
 
+
+  #npm install debug
   echo "fix package-lock.json hashes"
-  nix run nixpkgs#npm-lockfile-fix -- package-lock.json
+  #nix run nixpkgs#npm-lockfile-fix -- package-lock.json
+  nix run nixpkgs#python3 -- flatten-workspace-deps-from-package-lockfile.py
+  jq 'del(.packages[].optionalDependencies)' package-lock.json > temp.json && mv temp.json package-lock.json
+  #jq 'del(.devDependencies)' package.json > temp.json && mv temp.json package.json
 
   git diff package-lock.json > $current_nixpkgs_dir/package-lock.json.patch
+  #git diff package.json > $current_nixpkgs_dir/package.json.patch
+  NPM_HASH=$(nix run nixpkgs#prefetch-npm-deps -- package-lock.json)
+  echo $NPM_HASH
+
+  sed -i "s|npmDepsHash = \"[^\"]*\";|npmDepsHash = \"$NPM_HASH\";|" "$PACKAGE_FILE"
 }
 
 runme

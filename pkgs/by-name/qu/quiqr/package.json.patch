@@ -1,8 +1,8 @@
 diff --git a/package.json b/package.json
-index 3de14bd..61511e3 100644
+index 3de14bd..f505df0 100644
 --- a/package.json
 +++ b/package.json
-@@ -45,48 +45,87 @@
+@@ -45,48 +45,56 @@
    "keywords": [],
    "_comment_dependencies": "NOTE: Some dependencies below (glob, ai, @ai-sdk/*, gray-matter, sharp) are also declared in packages/backend/package.json. They must be duplicated here due to electron-builder limitation with npm workspaces - it only packages dependencies from root package.json, not workspace dependencies. See: https://github.com/electron-userland/electron-builder/issues/7103",
    "dependencies": {
@@ -41,6 +41,23 @@ index 3de14bd..61511e3 100644
 -    "tomlify-j0.4": "3.0.0",
 -    "ws": "^8.18.0",
 -    "zod": "^3.24.1"
+-  },
+-  "devDependencies": {
+-    "@alcalzone/release-script": "^3.5.6",
+-    "@electron/notarize": "^3.1.1",
+-    "@eslint/js": "^9.39.2",
+-    "@testing-library/dom": "^10.4.1",
+-    "@types/adm-zip": "^0.5.7",
+-    "@vitest/coverage-v8": "^4.0.15",
+-    "@vitest/ui": "^4.0.15",
+-    "concurrently": "^9.1.2",
+-    "cross-env": "^7.0.3",
+-    "electron": "^39.2.3",
+-    "electron-builder": "^26.3.3",
+-    "globals": "^17.0.0",
+-    "typescript-eslint": "^8.53.1",
+-    "vitest": "^4.0.15",
+-    "wait-on": "^8.0.4"
 +    "toml": "^3.x.x",
 +    "@quiqr/backend": "*",
 +    "@emotion/react": "^11.14.0",
@@ -74,57 +91,5 @@ index 3de14bd..61511e3 100644
 +    "docusaurus-lunr-search": "^3.6.0",
 +    "prism-react-renderer": "^2.3.0"
    },
-   "devDependencies": {
--    "@alcalzone/release-script": "^3.5.6",
--    "@electron/notarize": "^3.1.1",
--    "@eslint/js": "^9.39.2",
--    "@testing-library/dom": "^10.4.1",
--    "@types/adm-zip": "^0.5.7",
--    "@vitest/coverage-v8": "^4.0.15",
--    "@vitest/ui": "^4.0.15",
--    "concurrently": "^9.1.2",
--    "cross-env": "^7.0.3",
-+    "typescript": "~5.6.2",
-+    "@types/cors": "^2.8.17",
-+    "@types/express": "^4.17.21",
-+    "@types/fs-extra": "^11.0.4",
-+    "@types/js-yaml": "^4.x.x",
-+    "@types/node": "^20.10.6",
-     "electron": "^39.2.3",
--    "electron-builder": "^26.3.3",
--    "globals": "^17.0.0",
--    "typescript-eslint": "^8.53.1",
--    "vitest": "^4.0.15",
--    "wait-on": "^8.0.4"
-+    "wait-on": "^8.0.4",
-+    "@babel/plugin-transform-flow-strip-types": "^7.27.1",
-+    "@eslint/js": "^9.39.1",
-+    "@testing-library/jest-dom": "^6.9.1",
-+    "@testing-library/react": "^16.3.0",
-+    "@testing-library/user-event": "^14.6.1",
-+    "@types/react": "^19.0.0",
-+    "@types/react-dom": "^19.0.0",
-+    "@vitejs/plugin-react": "^4.7.0",
-+    "ajv": "^8.17.1",
-+    "cross-env": "^7.0.3",
-+    "eslint": "^9.39.1",
-+    "eslint-plugin-react-you-might-not-need-an-effect": "^0.7.0",
-+    "globals": "^16.5.0",
-+    "jsdom": "^27.3.0",
-+    "msw": "^2.12.4",
-+    "path-browserify": "^1.0.1",
-+    "typescript-eslint": "^8.48.0",
-+    "vite": "^7.0.6",
-+    "@docusaurus/module-type-aliases": "3.9.2",
-+    "@docusaurus/tsconfig": "3.9.2",
-+    "@docusaurus/types": "3.9.2"
-   },
    "overrides": {
      "react": "^19.2.0",
-@@ -256,4 +295,4 @@
-     "packages/frontend",
-     "packages/docs"
-   ]
--}
-+}
-\ No newline at end of file

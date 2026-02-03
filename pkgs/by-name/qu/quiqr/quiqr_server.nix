@@ -16,18 +16,15 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "quiqr-server";
-  inherit src version npmDepsHash patches nativeBuildInputs;
+  inherit src version npmDepsHash patches nativeBuildInputs nodejs;
 
   env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
 
   makeCacheWritable = true;
   dontNpmBuild = true;
 
-  postBuild = ''
-    #npm run _build_info # TODO with nix methods
-    npm run build:packages
-    npm run build:frontend
-  '';
+  # Skip optional dependencies to avoid missing platform-specific packages
+  #npmInstallFlags = [ "--omit=optional" ];
 
   installPhase = ''
     runHook preInstall

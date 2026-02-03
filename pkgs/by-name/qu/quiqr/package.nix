@@ -5,10 +5,12 @@
   buildGoModule,
   jq,
   git,
+  nodejs,
+  cowsay,
+  nodejs_20
 }:
 
 let
-
   version = "0.22.0";
 
   src = fetchFromGitHub {
@@ -18,15 +20,17 @@ let
     hash = "sha256-fjzqmcT4rKKasJeK64JQqZ8kiYjbWAaPPA85+tZYuvQ=";
   };
 
-  npmDepsHash = "sha256-iUNWhc3GPR7p39YQVLNQyKQfzZB5KcrzX6Iy0u43K9E=";
+  npmDepsHash = "sha256-GsutCZONxcpmRVLkyD30BihI0BFzK1LNnpAw8KSTV/I=";
 
   patches = [
-    ./package-lock.json.patch
+    #./package-lock.json.patch
+   #    ./package.json.patch
   ];
 
   nativeBuildInputs = [
     jq
     git
+    #cowsay
   ];
 
   embgit = buildGoModule rec {
@@ -62,6 +66,7 @@ let
 
 
   pkgsArgs = {
+    nodejs = nodejs;  # Pass nodejs 20 (npm 10) to build
     inherit
       src
       version
