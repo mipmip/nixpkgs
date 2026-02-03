@@ -12,6 +12,8 @@
   npmDepsHash,
   meta,
   patches,
+  postPatch,
+  nodejs,
   nativeBuildInputs
 
 }:
@@ -24,7 +26,7 @@ let
 in
 buildNpmPackage (finalAttrs: {
   pname = "quiqr";
-  inherit src version npmDepsHash nativeBuildInputs patches;
+  inherit src version npmDepsHash patches nativeBuildInputs nodejs postPatch;
 
   env.ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
 
@@ -66,7 +68,7 @@ buildNpmPackage (finalAttrs: {
       --set HUGO_PATH ${hugo}/bin/hugo \
       --inherit-argv0
 
-    pushd frontend/public
+    pushd packages/frontend/public
     for icon in icon.*; do
       dir=$out/share/icons/hicolor/"''${icon%.*}"/apps
       mkdir -p "$dir"

@@ -8,6 +8,7 @@ VERSION="0.22.0";
 PKGS="quiqr"
 GH_ORG="quiqr"
 GH_REPO="quiqr-desktop"
+#OVERRIDE_TAR="https://github.com/mipmip/quiqr-desktop/archive/refs/heads/fixnixnpm.tar.gz"
 
 make_command "about" "About this update script."
 about(){
@@ -22,37 +23,40 @@ make_command "update" "Get upstream and prepatch."
 update(){
 
   echo "updating ${PKGS} for nixpkgs packaging"
-  current_nixpkgs_dir=${PWD}
   temptarfile=/tmp/${PKGS}-v${VERSION}.tar.gz
   tempdir=/tmp/${PKGS}-v${VERSION}
 
   if [ ! -f "$temptarfile" ]; then
     echo "Tarball does not exist; downloading from github.";
-    wget https://github.com/${GH_ORG}/${GH_REPO}/archive/refs/tags/v${VERSION}.tar.gz -O $temptarfile
+    if [ ! -f "$OVERRIDE_TAR" ]; then
+      wget $OVERRIDE_TAR -O $temptarfile
+    else
+      wget https://github.com/${GH_ORG}/${GH_REPO}/archive/refs/tags/v${VERSION}.tar.gz -O $temptarfile
+    fi
   fi
 
   rm -Rf $tempdir
   mkdir $tempdir
-  cp flatten-workspace-deps-from-package-lockfile.py $tempdir
+
   tar -xzvf /tmp/${PKGS}-v${VERSION}.tar.gz -C $tempdir --strip-components=1
+
   cd $tempdir
+
   git init
   git add package-lock.json package.json
   git commit -m "commit4diff" package-lock.json package.json
 
+  echo "FIX PACKAGE-LOCK.JSON HASHES"
+  nix run nixpkgs#npm-lockfile-fix -- package-lock.json
 
-  #npm install debug
-  echo "fix package-lock.json hashes"
-  #nix run nixpkgs#npm-lockfile-fix -- package-lock.json
-  nix run nixpkgs#python3 -- flatten-workspace-deps-from-package-lockfile.py
-  jq 'del(.packages[].optionalDependencies)' package-lock.json > temp.json && mv temp.json package-lock.json
-  #jq 'del(.devDependencies)' package.json > temp.json && mv temp.json package.json
+  ## TEMP FULL COPY. ENABLE PATCHING
+  cp package-lock.json $SCRIPT_DIR/package-lock.json
 
-  git diff package-lock.json > $current_nixpkgs_dir/package-lock.json.patch
-  #git diff package.json > $current_nixpkgs_dir/package.json.patch
+  #git diff package-lock.json > $SCRIPT_DIR/package-lock.json.patch
+  #git diff package.json > $SCRIPT_DIR/package.json.patch
+
+  echo "UPDATE NPM_HASH"
   NPM_HASH=$(nix run nixpkgs#prefetch-npm-deps -- package-lock.json)
-  echo $NPM_HASH
-
   sed -i "s|npmDepsHash = \"[^\"]*\";|npmDepsHash = \"$NPM_HASH\";|" "$PACKAGE_FILE"
 }
 
