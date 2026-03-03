@@ -24,11 +24,11 @@ buildNpmPackage (finalAttrs: {
   makeCacheWritable = true;
   dontNpmBuild = true;
 
-  # Skip optional dependencies to avoid missing platform-specific packages
-  #npmInstallFlags = [ "--omit=optional" ];
   postBuild = ''
-    npm run build:packages
-    npm run build:frontend
+    # Build only the packages needed for standalone server
+    npm run build -w @quiqr/types
+    npm run build -w @quiqr/backend
+    npm run build -w @quiqr/adapter-standalone
   '';
 
 

@@ -10,9 +10,9 @@
 }:
 
 let
-  version = "0.22.4";
-  quiqrGitHash = "sha256-4HYZGTnJgssUv2nEqTnSxh1Aryq5Ri6hhGxxAojNNXI=";
-  npmDepsHash = "sha256-IUnAVhiJTiSNfvg1Oo5ZgB/1Nn0hskxl+XuVLAN0nL0=";
+  version = "0.22.5";
+  quiqrGitHash = "sha256-RwGRj0OE9bm9/Vu3/67KeYHaEcizpxRZdul+amIXyzk=";
+  npmDepsHash = "sha256-SeDeqRbZqsUELUKbf/jKTK0zUcV5iZcgMotOoi79HXI=";
 
   srcOfficial = fetchFromGitHub {
     owner = "quiqr";
@@ -34,8 +34,8 @@ let
   src = srcOfficial;
 
   patches = [
-    #./package-lock.json.patch
-    #./package.json.patch
+    # Fix globals version mismatch: package.json says ^17.0.0 but lockfile has 16.5.0
+    ./fix-globals-version.patch
   ];
 
   nativeBuildInputs = [

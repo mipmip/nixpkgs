@@ -33,8 +33,6 @@ buildNpmPackage (finalAttrs: {
   makeCacheWritable = true;
   dontNpmBuild = true;
 
-
-
   postBuild = ''
     npm run build:packages
     npm run build:frontend
