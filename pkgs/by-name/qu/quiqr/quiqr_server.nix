@@ -28,6 +28,7 @@ buildNpmPackage (finalAttrs: {
     # Build only the packages needed for standalone server
     npm run build -w @quiqr/types
     npm run build -w @quiqr/backend
+    npm run build -w @quiqr/frontend
     npm run build -w @quiqr/adapter-standalone
   '';
 

@@ -34,8 +34,10 @@ buildNpmPackage (finalAttrs: {
   dontNpmBuild = true;
 
   postBuild = ''
-    npm run build:packages
-    npm run build:frontend
+    npm run build -w @quiqr/types
+    npm run build -w @quiqr/backend
+    npm run build -w @quiqr/frontend
+    npm run build -w @quiqr/adapter-electron
   '';
 
   installPhase = ''
