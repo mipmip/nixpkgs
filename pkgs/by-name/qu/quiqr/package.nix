@@ -2,17 +2,17 @@
   lib,
   callPackage,
   fetchFromGitHub,
-  buildGoModule,
   jq,
   git,
   nodejs_22,
   npm-lockfile-fix,
+  embgit,
 }:
 
 let
-  version = "0.22.5";
-  quiqrGitHash = "sha256-RwGRj0OE9bm9/Vu3/67KeYHaEcizpxRZdul+amIXyzk=";
-  npmDepsHash = "sha256-SeDeqRbZqsUELUKbf/jKTK0zUcV5iZcgMotOoi79HXI=";
+  version = "0.23.0";
+  quiqrGitHash = "sha256-1AZilyWRbUVxHfGMll6qJhJSwCsJS0h2kaszJJLIkfQ=";
+  npmDepsHash = "sha256-3mSx5tW5a9c11xC7v9/AmxRzVtuwDEvaBAhQAkj0SSI=";
 
   srcOfficial = fetchFromGitHub {
     owner = "quiqr";
@@ -20,6 +20,7 @@ let
     tag = "v${version}";
     hash = quiqrGitHash;
     postFetch = ''
+      chmod +w $out/package-lock.json
       ${lib.getExe npm-lockfile-fix} $out/package-lock.json
     '';
   };
@@ -27,45 +28,25 @@ let
   srcMipmip = fetchFromGitHub {
     owner = "mipmip";
     repo = "quiqr-desktop";
-    rev = "dbe424b7007f86c492af399a0d857b1728eb3d6f";
+    rev = "5f13c9ff70eed00eb7c7d4133f29177476b29c2b";
     hash = quiqrGitHash;
+    postFetch = ''
+      chmod +w $out/package-lock.json
+      ${lib.getExe npm-lockfile-fix} $out/package-lock.json
+    '';
   };
 
-  src = srcOfficial;
+  src = srcMipmip;
 
   patches = [
     # Fix globals version mismatch: package.json says ^17.0.0 but lockfile has 16.5.0
-    ./fix-globals-version.patch
+      # ./fix-globals-version.patch
   ];
 
   nativeBuildInputs = [
     jq
     git
   ];
-
-  embgit = buildGoModule rec {
-    name = "embgit";
-    version = "0.6.4";
-
-    src = fetchFromGitHub {
-      owner = "quiqr";
-      repo = "embgit";
-      tag = "${version}";
-      sha256 = "sha256-0eEBKhJIcKGoW8Nd1/L4849Ew99GAKoRh3otuVw4P3o=";
-    };
-
-    vendorHash = "sha256-e0CXBakEXyWOPOmw1ORHUmWfHCcWkNGR0dwtdNXG9Xo=";
-
-    postInstall = ''
-      cp "$out/bin/src" "$out/bin/embgit"
-    '';
-
-    meta = with lib; {
-      description = "Embedded Git for electron apps";
-      homepage = "https://github.com/quiqr/embgit";
-      license = licenses.mit;
-    };
-  };
 
   meta = {
     changelog = "https://github.com/quiqr/quiqr-desktop/releases/tag/v${version}";
