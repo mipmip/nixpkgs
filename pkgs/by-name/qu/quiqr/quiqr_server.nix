@@ -53,6 +53,9 @@ buildNpmPackage (finalAttrs: {
       --set HUGO_PATH ${hugo}/bin/hugo \
       --inherit-argv0
 
+    makeWrapper '${lib.getExe nodejs}' "$out/bin/quiqr-admin" \
+      --add-flags $out/opt/quiqr-server/packages/adapters/standalone/dist/cli/user-admin.js
+
     runHook postInstall
   '';
 

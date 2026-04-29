@@ -11,7 +11,7 @@
 
 let
   version = "0.23.0";
-  quiqrGitHash = "sha256-1AZilyWRbUVxHfGMll6qJhJSwCsJS0h2kaszJJLIkfQ=";
+  quiqrGitHash = "sha256-ecfk6xVpNUZtDXtpAVACfmlh2sUS8tPGpgQ4iY/4h9c=";
   npmDepsHash = "sha256-3mSx5tW5a9c11xC7v9/AmxRzVtuwDEvaBAhQAkj0SSI=";
 
   srcOfficial = fetchFromGitHub {
@@ -28,7 +28,7 @@ let
   srcMipmip = fetchFromGitHub {
     owner = "mipmip";
     repo = "quiqr-desktop";
-    rev = "5f13c9ff70eed00eb7c7d4133f29177476b29c2b";
+    rev = "dd5066a61d5c7b9413db4dd7599dda088048f3bd";
     hash = quiqrGitHash;
     postFetch = ''
       chmod +w $out/package-lock.json
