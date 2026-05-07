@@ -149,6 +149,19 @@ in
               };
             };
 
+            preview = {
+              enabled = mkOption {
+                type = types.bool;
+                default = true;
+                description = "Enable Hugo preview server.";
+              };
+              baseUrl = mkOption {
+                type = types.str;
+                default = "http://localhost:13131";
+                description = "Base URL for the Hugo preview server.";
+              };
+            };
+
             variables = mkOption {
               type = types.attrsOf types.str;
               default = { };

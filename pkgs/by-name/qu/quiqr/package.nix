@@ -28,8 +28,8 @@ let
   srcMipmip = fetchFromGitHub {
     owner = "mipmip";
     repo = "quiqr-desktop";
-    rev = "dd5066a61d5c7b9413db4dd7599dda088048f3bd";
-    hash = quiqrGitHash;
+    rev = "61e87bbeba759c79f64584a3a96e3db0ad7c86e7";
+    hash = "sha256-UT+SguOpsme/KJRZlq9Dqt/jEAeoCS/8sat2npLaNUI=";
     postFetch = ''
       chmod +w $out/package-lock.json
       ${lib.getExe npm-lockfile-fix} $out/package-lock.json
