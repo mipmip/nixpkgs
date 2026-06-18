@@ -12,7 +12,7 @@
 let
   version = "0.23.0";
   quiqrGitHash = "sha256-ecfk6xVpNUZtDXtpAVACfmlh2sUS8tPGpgQ4iY/4h9c=";
-  npmDepsHash = "sha256-3mSx5tW5a9c11xC7v9/AmxRzVtuwDEvaBAhQAkj0SSI=";
+  npmDepsHash = "sha256-TMzBsTy2vCzdsdfHtNilb45My0RgkwU1G74cSlov7RM=";
 
   srcOfficial = fetchFromGitHub {
     owner = "quiqr";
@@ -28,8 +28,8 @@ let
   srcMipmip = fetchFromGitHub {
     owner = "mipmip";
     repo = "quiqr-desktop";
-    rev = "61e87bbeba759c79f64584a3a96e3db0ad7c86e7";
-    hash = "sha256-UT+SguOpsme/KJRZlq9Dqt/jEAeoCS/8sat2npLaNUI=";
+    rev = "9578537f8031412968bd83244f3257febd6079b7";
+    hash = "sha256-qZVnu4hjmtvdHhtUj1K7s//HtSv4qLwrQjuRa7zn8x8=";
     postFetch = ''
       chmod +w $out/package-lock.json
       ${lib.getExe npm-lockfile-fix} $out/package-lock.json
@@ -38,10 +38,7 @@ let
 
   src = srcMipmip;
 
-  patches = [
-    # Fix globals version mismatch: package.json says ^17.0.0 but lockfile has 16.5.0
-      # ./fix-globals-version.patch
-  ];
+  patches = [ ];
 
   nativeBuildInputs = [
     jq
